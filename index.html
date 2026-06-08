@@ -70,6 +70,15 @@
       border-left: 3px solid #D97757;
       border-radius: 6px;
       padding: 1.2rem 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .part-card:hover {
+      border-color: #D97757;
+      background: rgba(217, 119, 87, 0.16);
     }
 
     .part-label {
@@ -152,33 +161,20 @@
 
     <p class="section-title">課程三部曲</p>
     <div class="parts">
-      <div class="part-card">
+      <a class="part-card" href="AI 素質養成入門課 — 為白領上班族設計.html">
         <div class="part-label">Part 1</div>
         <div class="part-title">認識你的工作夥伴</div>
-      </div>
-      <div class="part-card">
+      </a>
+      <a class="part-card" href="AI 世代的個人電腦新情境 — 從文書處理機到 Agent 控制台.html">
         <div class="part-label">Part 2</div>
         <div class="part-title">個人電腦新情境</div>
-      </div>
-      <div class="part-card">
+      </a>
+      <a class="part-card" href="AI 啟動 JARVIS 模式 — 用 Claude Code 指揮真實工作.html">
         <div class="part-label">Part 3</div>
         <div class="part-title">啟動 JARVIS 模式</div>
-      </div>
+      </a>
     </div>
 
-    <p class="section-title">互動展示</p>
-    <div class="demos">
-      <a class="demo-card" href="neural_network_demo.html">
-        <div class="demo-tag">Part 1 · Demo</div>
-        <h3>Neural Network</h3>
-        <p>神經網路運作原理的互動視覺化展示</p>
-      </a>
-      <a class="demo-card" href="llm_agent_stack.html">
-        <div class="demo-tag">Part 2 · Demo</div>
-        <h3>LLM Agent Stack</h3>
-        <p>AI Agent 架構層次的互動圖解</p>
-      </a>
-    </div>
   </main>
 
   <footer>
