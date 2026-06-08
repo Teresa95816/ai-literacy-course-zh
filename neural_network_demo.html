@@ -244,39 +244,6 @@ input[type=range]::-webkit-slider-thumb {
 .step-title { font-size:12px;font-weight:500;margin-bottom:3px; }
 .step-desc  { font-size:11px;color:var(--text2);line-height:1.55; }
 
-/* ── Prompt pill ── */
-.prompt-pill {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 7px;
-  padding: 6px 12px;
-  min-width: 0;
-  overflow: hidden;
-}
-.prompt-label {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.prompt-text {
-  font-family: var(--font);
-  font-size: 11.5px;
-  color: var(--text2);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-  flex: 1;
-  line-height: 1.5;
-}
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 /* Tooltip */
@@ -315,10 +282,6 @@ input[type=range]::-webkit-slider-thumb {
         <div class="stat-label">訊號</div>
         <div class="stat-val" id="stat-signal">—</div>
       </div>
-    </div>
-    <div class="prompt-pill">
-      <span class="prompt-label">提示詞</span>
-      <span class="prompt-text">請提供一個單一 html 檔：演示神經網路 (Neural Network)，數以億計的「節點 (Node)」組成，每個節點就像一位小小的投票者，輸入一個問題後，訊號會層層傳遞，每一層都在萃取不同層次的特徵，最終匯整出答案。</span>
     </div>
     <div class="topbar-btns">
       <button class="btn primary" id="btn-fire">▶ 發送訊號</button>
