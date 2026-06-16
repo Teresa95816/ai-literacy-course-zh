@@ -152,6 +152,20 @@ Claude Code 讀取當前專案的上下文（Context Window）
 
 ---
 
+#### GitHub 能帶給你什麼
+
+推上 GitHub，你得到的遠不只是備份：
+
+1. 雲端備份 — 電腦壞了，工作還在
+2. 跨裝置存取 — 在任何地方 `git pull`，拿到最新版本
+3. 連結即分享 — 把 repo 網址給同事，他們立刻能看到你的工作
+4. GitHub Pages — 把 Marp 匯出的 HTML 發布上線，一個連結就能分享簡報
+5. GitHub Actions — 固定時間自動執行腳本，不需要開電腦
+
+> Claude Code 直接整合 GitHub——你說一句「push」，它幫你同步。
+
+---
+
 #### 補充：初次使用 Git
 
 告訴 Git 你是誰 : 這個設定只需要做一次，之後所有 repo 都會沿用。
@@ -283,6 +297,7 @@ paginate: true
 |------|-------|---------|
 | Claude Code | 在你電腦裡工作的 AI Agent | Human-in-the-Loop：人始終在決策圈內 |
 | Git | 版本控制（Repo / Commit / Remote）| Claude Code 的操作記錄與安全網 |
+| GitHub | 雲端存放平台 | 備份、跨裝置存取、連結分享、網頁發布、定時自動執行 |
 | VS Code / Markdown / Marp | 工作環境與文件格式 | Agent 的操作空間，人與 AI 共讀的原生格式 |
 
 ---
