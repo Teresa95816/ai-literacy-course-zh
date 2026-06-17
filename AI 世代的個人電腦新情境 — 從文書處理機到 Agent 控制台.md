@@ -191,6 +191,9 @@ git --version
 
 ```bash
 git config --global user.name "Your Name"
+```
+
+```bash
 git config --global user.email "your.email@example.com"
 ```
 
