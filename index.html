@@ -58,6 +58,52 @@
       margin: 1.5rem 0 2rem;
     }
 
+    .mode-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .mode-buttons {
+      display: inline-flex;
+      border: 1px solid rgba(217, 119, 87, 0.4);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: rgba(245, 240, 232, 0.6);
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .mode-btn+.mode-btn {
+      border-left: 1px solid rgba(217, 119, 87, 0.4);
+    }
+
+    .mode-btn.active {
+      background: #D97757;
+      color: #1A1A1A;
+      font-weight: 600;
+    }
+
+    .mode-btn:hover:not(.active) {
+      background: rgba(217, 119, 87, 0.12);
+      color: #F5F0E8;
+    }
+
+    .mode-hint {
+      font-size: 0.78rem;
+      color: rgba(245, 240, 232, 0.45);
+    }
+
     .section-title {
       font-size: 0.8rem;
       letter-spacing: 0.12em;
@@ -166,19 +212,27 @@
   </header>
 
   <main>
+    <div class="mode-switcher" role="group" aria-label="瀏覽模式選擇">
+      <div class="mode-buttons">
+        <button type="button" class="mode-btn" data-mode="slide">簡報模式</button>
+        <button type="button" class="mode-btn" data-mode="scroll">瀏覽模式</button>
+      </div>
+      <p class="mode-hint">簡報模式：逐頁瀏覽，適合上課；瀏覽模式：整頁捲動，適合自行閱讀，手機瀏覽建議使用瀏覽模式</p>
+    </div>
+
     <hr class="divider">
 
     <p class="section-title">課程三部曲</p>
     <div class="parts">
-      <a class="part-card" href="part1-ai-literacy-intro.html">
+      <a class="part-card" href="part1-ai-literacy-intro.html" data-slide="part1-ai-literacy-intro.html" data-scroll="part1-ai-literacy-intro-scroll.html">
         <div class="part-label">Part 1</div>
         <div class="part-title">認識你的工作夥伴</div>
       </a>
-      <a class="part-card" href="part2-agent-console.html">
+      <a class="part-card" href="part2-agent-console.html" data-slide="part2-agent-console.html" data-scroll="part2-agent-console-scroll.html">
         <div class="part-label">Part 2</div>
         <div class="part-title">個人電腦新情境</div>
       </a>
-      <a class="part-card" href="part3-jarvis-mode.html">
+      <a class="part-card" href="part3-jarvis-mode.html" data-slide="part3-jarvis-mode.html" data-scroll="part3-jarvis-mode-scroll.html">
         <div class="part-label">Part 3</div>
         <div class="part-title">啟動 JARVIS 模式</div>
       </a>
@@ -188,12 +242,12 @@
 
     <p class="section-title">附件 · 規範文件</p>
     <div class="demos">
-      <a class="demo-card" href="ai-policy.html">
+      <a class="demo-card" href="ai-policy.html" data-slide="ai-policy.html" data-scroll="ai-policy-scroll.html">
         <div class="demo-tag">Policy</div>
         <h3>公司 AI 使用政策</h3>
         <p>五項核心原則、核准工具規範、禁止事項與員工自我檢查清單。使用本課程教材前，建議先閱讀此文件。</p>
       </a>
-      <a class="demo-card" href="anthropic-academy.html">
+      <a class="demo-card" href="anthropic-academy.html" data-slide="anthropic-academy.html" data-scroll="anthropic-academy-scroll.html">
         <div class="demo-tag">Official · 免費 · 官方證照</div>
         <h3>Anthropic Academy</h3>
         <p>Anthropic 官方免費學習平台，課程涵蓋 AI 入門到開發者實作，完課頒發官方證照可加進 LinkedIn。</p>
@@ -211,6 +265,36 @@
     &nbsp;·&nbsp;
     最後更新：2026-06-18
   </footer>
+
+  <script>
+    (function () {
+      var STORAGE_KEY = 'aiCoursesViewMode';
+      var buttons = document.querySelectorAll('.mode-btn');
+      var links = document.querySelectorAll('[data-slide]');
+
+      function applyMode(mode) {
+        links.forEach(function (link) {
+          var url = mode === 'scroll' ? link.dataset.scroll : link.dataset.slide;
+          if (url) link.setAttribute('href', url);
+        });
+        buttons.forEach(function (btn) {
+          var isActive = btn.dataset.mode === mode;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var mode = btn.dataset.mode;
+          applyMode(mode);
+          localStorage.setItem(STORAGE_KEY, mode);
+        });
+      });
+
+      applyMode(localStorage.getItem(STORAGE_KEY) || 'slide');
+    })();
+  </script>
 
 </body>
 
