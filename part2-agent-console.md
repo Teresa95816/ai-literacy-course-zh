@@ -52,8 +52,6 @@ blockquote {
 
 #### 動手做：Bookmark 三個供應商的 Chatbot
 
----
-
 #### 動手做：安裝 Claude Code
 
 1. 開啟 [nodejs.org](https://nodejs.org)，下載並安裝 LTS 版
@@ -64,6 +62,7 @@ blockquote {
 [Claude Code DOC Quick Start](https://code.claude.com/docs/zh-TW/quickstart)
 
 > 如果 `node --version` 沒有輸出，關掉終端機重新開啟再試一次。
+> Mac 找不到 Claude 的路徑，將終端機裡的訊息貼進 AI Chatbot 問 AI。
 
 ---
 
@@ -201,14 +200,11 @@ git config --global user.email "your.email@example.com"
 
 ### 2-3 VS Code
 
-對知識工作者來說，提供了一個 Agent 可以感知環境、執行動作、讀寫檔案的操作空間。
-
----
-
 #### 動手做：安裝 VS Code 和 延伸套件
 
-- [code.visualstudio.com](https://code.visualstudio.com)
-- 點選左側「Extensions」→ 搜尋套件名稱 → 點選 Install。
+[code.visualstudio.com](https://code.visualstudio.com)
+
+在 VS Code 中，點選左側「Extensions」→ 搜尋套件名稱 → 點選 Install。
 
 | 套件名稱 | 功能說明 |
 |---------|--------|

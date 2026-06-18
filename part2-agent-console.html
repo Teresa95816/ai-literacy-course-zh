@@ -45,24 +45,23 @@ blockquote {
   color: #F5E0E8;
 }
 </style>
-<h1 id="ai-世代的個人電腦新情境--從文書處理機到-agent-控制台" ebook-toc-level-1="" heading="AI 世代的個人電腦新情境 — 從文書處理機到 Agent 控制台 ">AI 世代的個人電腦新情境 — 從文書處理機到 Agent 控制台 </h1>
-<h2 id="part-2--什麼是-agent-" ebook-toc-level-2="" heading="Part 2 : 什麼是 Agent ？ ">Part 2 : 什麼是 Agent ？ </h2>
+<h1 id="ai-世代的個人電腦新情境--從文書處理機到-agent-控制台">AI 世代的個人電腦新情境 — 從文書處理機到 Agent 控制台 </h1>
+<h2 id="part-2--什麼是-agent-">Part 2 : 什麼是 Agent ？ </h2>
 <blockquote>
 <p>以前，電腦是你的工具。<br>
 現在，電腦是你的辦公室——而 AI Agent，是在裡面替你工作的員工。</p>
 </blockquote>
 <p><a href="file:///d:\aiCourses\llm-agent-stack.html">LLM Agent Stack</a></p>
 <hr>
-<h3 id="2-1-claude-code" ebook-toc-level-3="" heading="2-1 Claude Code ">2-1 Claude Code </h3>
+<h3 id="2-1-claude-code">2-1 Claude Code </h3>
 <p>如果 ChatGPT 是你的電話顧問——你打過去問，它給建議，但它看不到你桌上的東西、也不能幫你動手<br>
 那麼 Claude Code 就是坐在你旁邊的同事，你的螢幕它看得到，鍵盤它也能打。</p>
 <blockquote>
 <p>一個讓 AI 真正在你的電腦上工作的工具</p>
 </blockquote>
 <hr>
-<h4 id="動手做bookmark-三個供應商的-chatbot" ebook-toc-level-4="" heading="動手做：Bookmark 三個供應商的 Chatbot ">動手做：Bookmark 三個供應商的 Chatbot </h4>
-<hr>
-<h4 id="動手做安裝-claude-code" ebook-toc-level-4="" heading="動手做：安裝 Claude Code ">動手做：安裝 Claude Code </h4>
+<h4 id="動手做bookmark-三個供應商的-chatbot">動手做：Bookmark 三個供應商的 Chatbot </h4>
+<h4 id="動手做安裝-claude-code">動手做：安裝 Claude Code </h4>
 <ol>
 <li>開啟 <a href="https://nodejs.org">nodejs.org</a>，下載並安裝 LTS 版</li>
 <li>開啟終端機，確認 <code>node --version</code> 與 <code>npm --version</code> 都有輸出版本號</li>
@@ -71,10 +70,11 @@ blockquote {
 </ol>
 <p><a href="https://code.claude.com/docs/zh-TW/quickstart">Claude Code DOC Quick Start</a></p>
 <blockquote>
-<p>如果 <code>node --version</code> 沒有輸出，關掉終端機重新開啟再試一次。</p>
+<p>如果 <code>node --version</code> 沒有輸出，關掉終端機重新開啟再試一次。<br>
+Mac 找不到 Claude 的路徑，將終端機裡的訊息貼進 AI Chatbot 問 AI。</p>
 </blockquote>
 <hr>
-<h4 id="human-in-the-loop" ebook-toc-level-4="" heading="Human-in-the-Loop ">Human-in-the-Loop </h4>
+<h4 id="human-in-the-loop">Human-in-the-Loop </h4>
 <p>Claude Code 的運作邏輯：</p>
 <pre data-role="codeBlock" data-info="" class="language-text"><code>你的指令（Prompt）
     ↓
@@ -90,7 +90,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
 在做重大決策前會停下來確認，你設定的信任邊界，決定了它能自主行動的範圍。</p>
 </blockquote>
 <hr>
-<h4 id="claude-code-能做什麼" ebook-toc-level-4="" heading="Claude Code 能做什麼 ">Claude Code 能做什麼 </h4>
+<h4 id="claude-code-能做什麼">Claude Code 能做什麼 </h4>
 <table>
 <thead>
 <tr>
@@ -129,7 +129,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
 <p>Claude Code 的操作介面是終端機的命令列，也可以在 VS Code 裡直接呼叫它。</p>
 </blockquote>
 <hr>
-<h3 id="2-2-git" ebook-toc-level-3="" heading="2-2 Git ">2-2 Git </h3>
+<h3 id="2-2-git">2-2 Git </h3>
 <p>你有沒有這樣的資料夾：</p>
 <pre data-role="codeBlock" data-info="" class="language-text"><code>報告_最終版.docx
 報告_最終版_修改後.docx
@@ -139,7 +139,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
 <p>只需要一份檔案，卻能看到任何歷史版本、隨時回到過去任何一個時間點。</p>
 </blockquote>
 <hr>
-<h4 id="動手做安裝-git" ebook-toc-level-4="" heading="動手做：安裝 Git ">動手做：安裝 Git </h4>
+<h4 id="動手做安裝-git">動手做：安裝 Git </h4>
 <table>
 <thead>
 <tr>
@@ -164,7 +164,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
 <p>有輸出版本號（例如 <code>git version 2.x.x</code>）即代表安裝成功。</p>
 </blockquote>
 <hr>
-<h4 id="git-和-github-不是同一件事" ebook-toc-level-4="" heading="Git 和 GitHub 不是同一件事 ">Git 和 GitHub 不是同一件事 </h4>
+<h4 id="git-和-github-不是同一件事">Git 和 GitHub 不是同一件事 </h4>
 <table>
 <thead>
 <tr>
@@ -195,11 +195,11 @@ Claude Code 讀取當前專案的上下文（Context Window）
 <p>Git 是工具，GitHub 是平台；GitHub 只是讓 Git 的記錄「上雲」。</p>
 </blockquote>
 <hr>
-<h4 id="repository" ebook-toc-level-4="" heading="Repository ">Repository </h4>
+<h4 id="repository">Repository </h4>
 <p>簡稱 repo，是一個有完整歷史記錄的資料夾。</p>
-<h4 id="commit" ebook-toc-level-4="" heading="Commit ">Commit </h4>
+<h4 id="commit">Commit </h4>
 <p>把當前的變更打包成一個有名字的歷史節點，附上說明記錄「這次改了什麼、為什麼改」。</p>
-<h4 id="remote" ebook-toc-level-4="" heading="Remote ">Remote </h4>
+<h4 id="remote">Remote </h4>
 <p>本機的 repo 只活在你的電腦裡。Remote 是在 GitHub 建立一份備份。</p>
 <pre data-role="codeBlock" data-info="" class="language-text"><code>你的電腦（本機 repo）
     ^
@@ -211,7 +211,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
     v        | 
 同事的電腦（本機 repo）
 </code></pre><hr>
-<h4 id="github-能帶給你什麼" ebook-toc-level-4="" heading="GitHub 能帶給你什麼 ">GitHub 能帶給你什麼 </h4>
+<h4 id="github-能帶給你什麼">GitHub 能帶給你什麼 </h4>
 <p>推上 GitHub，你得到的遠不只是備份：</p>
 <ol>
 <li>雲端備份 — 電腦壞了，工作還在</li>
@@ -221,19 +221,15 @@ Claude Code 讀取當前專案的上下文（Context Window）
 <li>GitHub Actions — 固定時間自動執行腳本，不需要開電腦</li>
 </ol>
 <hr>
-<h4 id="動手做初次使用-git" ebook-toc-level-4="" heading="動手做：初次使用 Git ">動手做：初次使用 Git </h4>
+<h4 id="動手做初次使用-git">動手做：初次使用 Git </h4>
 <p>告訴 Git 你是誰 : 這個設定只需要做一次，之後所有 repo 都會沿用。</p>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name <span class="token string">"Your Name"</span>
 </code></pre><pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email <span class="token string">"your.email@example.com"</span>
 </code></pre><hr>
-<h3 id="2-3-vs-code" ebook-toc-level-3="" heading="2-3 VS Code ">2-3 VS Code </h3>
-<p>對知識工作者來說，提供了一個 Agent 可以感知環境、執行動作、讀寫檔案的操作空間。</p>
-<hr>
-<h4 id="動手做安裝-vs-code-和-延伸套件" ebook-toc-level-4="" heading="動手做：安裝 VS Code 和 延伸套件 ">動手做：安裝 VS Code 和 延伸套件 </h4>
-<ul>
-<li><a href="#ebook-heading-codevisualstudiocom">code.visualstudio.com</a></li>
-<li>點選左側「Extensions」→ 搜尋套件名稱 → 點選 Install。</li>
-</ul>
+<h3 id="2-3-vs-code">2-3 VS Code </h3>
+<h4 id="動手做安裝-vs-code-和-延伸套件">動手做：安裝 VS Code 和 延伸套件 </h4>
+<p><a href="https://code.visualstudio.com">code.visualstudio.com</a></p>
+<p>在 VS Code 中，點選左側「Extensions」→ 搜尋套件名稱 → 點選 Install。</p>
 <table>
 <thead>
 <tr>
@@ -265,7 +261,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
 </tbody>
 </table>
 <hr>
-<h4 id="markdown-和-ai-說同一種語言" ebook-toc-level-4="" heading="Markdown 和 AI 說同一種語言 ">Markdown 和 AI 說同一種語言 </h4>
+<h4 id="markdown-和-ai-說同一種語言">Markdown 和 AI 說同一種語言 </h4>
 <p>如果你的工作筆記本來就是 Markdown，就等於你和 AI 之間不需要格式翻譯。</p>
 <p>提示詞、輸出、儲存，都在同一個格式生態裡流轉。</p>
 <pre data-role="codeBlock" data-info="markdown" class="language-markdown markdown"><code><span class="token title important"><span class="token punctuation">#</span> 這是標題</span>
@@ -280,7 +276,7 @@ Claude Code 讀取當前專案的上下文（Context Window）
 <p>這份投影片本身，就是用 Markdown 寫成的。</p>
 </blockquote>
 <hr>
-<h4 id="marpmarkdown-presentation-ecosystem" ebook-toc-level-4="" heading="Marp（Markdown Presentation Ecosystem） ">Marp（Markdown Presentation Ecosystem） </h4>
+<h4 id="marpmarkdown-presentation-ecosystem">Marp（Markdown Presentation Ecosystem） </h4>
 <p>「這份投影片本身，就是用 Markdown 寫成的。」——更精確地說，是用 Marp 製作的。</p>
 <p>在 <code>.md</code> 檔案開頭加上 frontmatter 宣告，三條橫線 <code>---</code> 就是換頁。</p>
 <pre data-role="codeBlock" data-info="markdown" class="language-markdown markdown"><code><span class="token front-matter-block"><span class="token punctuation">---</span>
@@ -299,12 +295,12 @@ paginate: true</span>
 
 用三條橫線分隔每一頁
 </code></pre><hr>
-<h4 id="動手做完整工具鏈閉環" ebook-toc-level-4="" heading="動手做：完整工具鏈閉環 ">動手做：完整工具鏈閉環 </h4>
+<h4 id="動手做完整工具鏈閉環">動手做：完整工具鏈閉環 </h4>
 <blockquote>
 <p>AI 生成 → 本機編輯 → Git 版控 → 雲端備份。</p>
 </blockquote>
 <hr>
-<h2 id="小結part-2-概念關係總覽" ebook-toc-level-2="" heading="小結：Part 2 概念關係總覽 ">小結：Part 2 概念關係總覽 </h2>
+<h2 id="小結part-2-概念關係總覽">小結：Part 2 概念關係總覽 </h2>
 <table>
 <thead>
 <tr>
@@ -342,7 +338,7 @@ paginate: true</span>
 從這一刻起，AI 不再只是你聽說過的東西，而是坐在你旁邊、等你開口的同事。</p>
 </blockquote>
 <hr>
-<h2 id="補充第一次-push-遇到-github-驗證怎麼辦" ebook-toc-level-2="" heading="補充：第一次 push 遇到 GitHub 驗證怎麼辦 ">補充：第一次 push 遇到 GitHub 驗證怎麼辦 </h2>
+<h2 id="補充第一次-push-遇到-github-驗證怎麼辦">補充：第一次 push 遇到 GitHub 驗證怎麼辦 </h2>
 <table>
 <thead>
 <tr>
@@ -368,7 +364,7 @@ paginate: true</span>
 </code></pre><p><code>-u</code> 的作用是「記住這條上傳路徑」，之後直接 <code>git push</code> 就能推到同一個地方。</p>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">git</span> push <span class="token parameter variable">-u</span> origin main
 </code></pre><p>Mac 用戶：<code>brew</code> 是 macOS 的套件管理工具（Homebrew），如果還沒安裝，先前往 <a href="https://brew.sh">brew.sh</a> 安裝，再執行上述指令。</p>
-</div><div id="ebook-heading-codevisualstudiocom" ebook-toc-level-1="" heading="code.visualstudio.com"><div></div></div></body></html>
+</div></body></html>
     </div>
   </body>
 </html>
