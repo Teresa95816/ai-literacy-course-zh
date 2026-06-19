@@ -287,6 +287,8 @@ paginate: true
 
 ## 補充：第一次 push 遇到 GitHub 驗證怎麼辦
 
+> 卡住了，先別自己埋頭查——把終端機顯示的訊息貼給 Claude Code，問問你的 AI 工作夥伴。
+
 | 平台 | 驗證機制 | 你需要做什麼 |
 |------|---------|------------|
 | Windows | Git Credential Manager（Git for Windows 內建）| 第一次 push 自動開啟瀏覽器 → 登入 GitHub → 授權完成，憑證存入系統 |
