@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://allenintaipei.github.io/ai-literacy-course-zh/sitemap.xml
