@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Auto-fix absolute file:// links that Markdown Preview Enhanced sometimes
+# bakes into exported scroll-mode HTML instead of keeping them relative.
+# Fails open: any error here must never block a commit.
+
+files=$(git diff --cached --name-only --diff-filter=ACM -- '*.html' 2>/dev/null)
+[ -z "$files" ] && exit 0
+
+for f in $files; do
+  [ -f "$f" ] || continue
+  if grep -qE 'href="file:///[A-Za-z]:[\\/][^"]*"' "$f" 2>/dev/null; then
+    sed -E -i.bak 's#href="file:///[A-Za-z]:[\\/]([^"]*[\\/])?([^"\\/]+\.html)"#href="\2"#g' "$f" 2>/dev/null \
+      && rm -f "$f.bak" \
+      && git add "$f" 2>/dev/null \
+      && echo "pre-commit: fixed absolute file:// link(s) in $f"
+  fi
+done
+
+exit 0
