@@ -323,9 +323,73 @@ paginate: true</span>
 <span class="token list punctuation">-</span> 預設不使用破折號（— 或 --）.若需連接、轉折或補充說明, 優先改用逗號、句號分句.
 <span class="token list punctuation">-</span> 逗號、句號、分號、冒號統一使用半形 (, . ; :)
 </code></pre><hr>
+<h4 id="動手做-拿到一份你自己的副本">動手做: 拿到一份你自己的副本 </h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Fork</th>
+<th>Clone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>動作發生在</td>
+<td>GitHub 網站</td>
+<td>你的電腦</td>
+</tr>
+<tr>
+<td>做的事</td>
+<td>把別人的 repo 複製一份到你自己的帳號</td>
+<td>把一份 repo（自己的或別人的）下載到本機</td>
+</tr>
+<tr>
+<td>結果</td>
+<td>你的帳號下多了一份完全獨立的 repo</td>
+<td>本機資料夾裡有一份可以編輯的副本</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>開啟 <a href="https://github.com/AlleninTaipei/ai-literacy-course-zh">本課程的 GitHub repo</a>, 點擊右上角的 Fork</li>
+<li>Fork 完成後, 網址會變成 <code>github.com/你的帳號/ai-literacy-course-zh</code>, 這是你自己的副本</li>
+<li>點擊綠色的 Code 按鈕, 複製 HTTPS 網址, 在終端機執行:</li>
+</ol>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">git</span> clone https://github.com/你的帳號/ai-literacy-course-zh.git
+</code></pre><blockquote>
+<p>Clone 下來的 origin, 指向的是你帳號下的副本, 不是原作者的 repo.<br>
+之後每一次 commit、push, 都只會進到你自己的 fork, 不會動到原始版本.</p>
+</blockquote>
+<hr>
+<h4 id="動手做-markdown-file-開啟預覽">動手做: markdown file 開啟預覽 </h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Markdown Preview Enhanced</th>
+<th>Marp for VS Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>負責什麼</td>
+<td>一般文件, 整頁捲動閱讀</td>
+<td>有 frontmatter（<code>marp: true</code>）的投影片檔</td>
+</tr>
+<tr>
+<td>預覽畫面</td>
+<td>整頁捲動式</td>
+<td>逐頁切換式</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>兩個套件都裝的情況下, 開啟一份有 <code>marp: true</code> frontmatter 的 <code>.md</code> 並點擊預覽, VS Code 預設仍會用 Markdown Preview Enhanced 開啟, 同時跳出提示, 問你要不要改用 Marp for VS Code 顯示.</p>
+</blockquote>
+<hr>
 <h4 id="動手做-完整工具鏈閉環">動手做: 完整工具鏈閉環 </h4>
 <blockquote>
-<p>AI 生成 → VS Code 編輯 → Git 版控 → 雲端備份.</p>
+<p>新資料夾 → AI 生成 → VS Code 編輯 → New Repo → Git 版控 → 雲端備份.</p>
 </blockquote>
 <hr>
 <h2 id="小結-part-2-概念關係總覽">小結: Part 2 概念關係總覽 </h2>

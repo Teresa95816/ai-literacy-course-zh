@@ -287,9 +287,41 @@ paginate: true
 
 ---
 
+#### 動手做: 拿到一份你自己的副本
+
+| | Fork | Clone |
+|---|------|-------|
+| 動作發生在 | GitHub 網站 | 你的電腦 |
+| 做的事 | 把別人的 repo 複製一份到你自己的帳號 | 把一份 repo（自己的或別人的）下載到本機 |
+| 結果 | 你的帳號下多了一份完全獨立的 repo | 本機資料夾裡有一份可以編輯的副本 |
+
+1. 開啟 [本課程的 GitHub repo](https://github.com/AlleninTaipei/ai-literacy-course-zh), 點擊右上角的 Fork
+2. Fork 完成後, 網址會變成 `github.com/你的帳號/ai-literacy-course-zh`, 這是你自己的副本
+3. 點擊綠色的 Code 按鈕, 複製 HTTPS 網址, 在終端機執行:
+
+```bash
+git clone https://github.com/你的帳號/ai-literacy-course-zh.git
+```
+
+> Clone 下來的 origin, 指向的是你帳號下的副本, 不是原作者的 repo.
+> 之後每一次 commit、push, 都只會進到你自己的 fork, 不會動到原始版本.
+
+---
+
+#### 動手做: markdown file 開啟預覽
+
+| | Markdown Preview Enhanced | Marp for VS Code |
+|---|---|---|
+| 負責什麼 | 一般文件, 整頁捲動閱讀 | 有 frontmatter（`marp: true`）的投影片檔 |
+| 預覽畫面 | 整頁捲動式 | 逐頁切換式 |
+
+> 兩個套件都裝的情況下, 開啟一份有 `marp: true` frontmatter 的 `.md` 並點擊預覽, VS Code 預設仍會用 Markdown Preview Enhanced 開啟, 同時跳出提示, 問你要不要改用 Marp for VS Code 顯示.
+
+---
+
 #### 動手做: 完整工具鏈閉環
 
-> AI 生成 → VS Code 編輯 → Git 版控 → 雲端備份.
+> 新資料夾 → AI 生成 → VS Code 編輯 → New Repo → Git 版控 → 雲端備份.
 
 ---
 
