@@ -342,7 +342,9 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 備案
 
 ```bash
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned -Force
+npm uninstall -g @anthropic-ai/claude-code
+npm cache clean --force
+npm install -g @anthropic-ai/claude-code
 ```
 
 ---

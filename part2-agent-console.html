@@ -424,7 +424,9 @@ paginate: true
     <p>VS Code 終端機打不開 Claude Code, 在 PowerShell 執行:</p>
     <pre class="code-block"><span class="fn">Set-ExecutionPolicy</span> <span class="key">-Scope</span> <span class="key">CurrentUser</span> <span class="key">RemoteSigned</span></pre>
     <p>重新開啟 VS Code 終端機再試一次. 若仍無法解決, 改用備案指令:</p>
-    <pre class="code-block"><span class="fn">Set-ExecutionPolicy</span> <span class="key">-Scope</span> <span class="key">CurrentUser</span> <span class="key">RemoteSigned</span> <span class="key">-Force</span></pre>
+    <pre class="code-block"><span class="fn">npm</span> <span class="key">uninstall</span> <span class="key">-g</span> <span class="str">@anthropic-ai/claude-code</span>
+<span class="fn">npm</span> <span class="key">cache</span> <span class="key">clean</span> <span class="key">--force</span>
+<span class="fn">npm</span> <span class="key">install</span> <span class="key">-g</span> <span class="str">@anthropic-ai/claude-code</span></pre>
   </div>
 </section>
 
