@@ -678,7 +678,7 @@
 公司週報與客戶簡報的製作資料夾.
 
 ## 輸出規範
-- 預設語言: 繁體中文, 專業英文術語(需要時加括號標注)
+- 預設語言: 繁體中文, 專業英文術語（需要時加括號標注）
 
 ## 禁止動作
 - 不要刪除任何檔案</pre>
@@ -700,7 +700,7 @@
 
     <section>
       <h2>3-2 掌握你的夥伴正在做什麼</h2>
-      <p>任務執行中, 對話區會出現類似這樣的文字, 格式是: 動作(已花時間 · 消耗的 token 數量)</p>
+      <p>任務執行中, 對話區會出現類似這樣的文字, 格式是: 動作 (已花時間 · 消耗的 token 數量)</p>
       <pre class="code-block">⠸ Reading… (8s · ↑2k tokens)</pre>
       <div class="info-box">
         <span class="tag">解讀</span>
@@ -735,13 +735,13 @@
 2. Yes, always
 3. No</pre>
       <div class="api-fields">
-        <div class="field"><span class="name">Yes(本次同意)</span>
+        <div class="field"><span class="name">Yes（本次同意）</span>
           <div class="desc">這次允許, 下次再問. 適合第一次嘗試某個操作.</div>
         </div>
-        <div class="field"><span class="name">Yes, always(永遠同意)</span>
+        <div class="field"><span class="name">Yes, always（永遠同意）</span>
           <div class="desc">這類操作以後不再詢問. 適合你已確認這個操作安全.</div>
         </div>
-        <div class="field"><span class="name">No(拒絕)</span>
+        <div class="field"><span class="name">No（拒絕）</span>
           <div class="desc">不執行, Claude Code 會尋找替代方案. 適合不確定這個操作是否正確.</div>
         </div>
       </div>
@@ -749,14 +749,13 @@
 
     <section>
       <h2>3-4 Commands and Skills</h2>
-      <pre class="code-block">請幫我用 markdown 方式製表, 列出所有內建的 Commands 和它的功用說明, 轉存於桌面.</pre>
-      <pre class="code-block">請幫我用 markdown 方式製表, 列出所有內建的 Skill 和它的功用說明, 轉存於桌面.</pre>
       <div class="response-box">
-        <div class="response-field"><span class="rf-key">全域(所有專案)</span><span class="rf-val">Windows
+        <div class="response-field"><span class="rf-key">全域（所有專案）</span><span class="rf-val">Windows
             <code>C:\Users\&lt;名稱&gt;\.claude\commands\</code>, Mac/Linux <code>~/.claude/commands/</code></span></div>
-        <div class="response-field"><span class="rf-key">專案(只限當前)</span><span class="rf-val">Windows
-            <code>.claude\commands\</code>, Mac/Linux <code>.claude/commands/</code></span></div>
+        <div class="response-field"><span class="rf-key">專案（只限當前）</span><span class="rf-val">Windows
+            <code>&lt;專案根目錄&gt;\.claude\commands\</code>, Mac/Linux <code>.claude/commands/</code></span></div>
       </div>
+      <pre class="code-block">/help</pre>
       <div class="takeaway">
         <p>你可以請 Claude Code 把功能確認過的工作流程, 幫你寫成一個指令.</p>
       </div>
@@ -799,27 +798,27 @@
       </div>
       <div class="wf-panel demo-panel visible" id="wf-p0">
         <p>批次掃描多檔、自動命名、同步更新彙整索引:</p>
-        <pre class="code-block">掃描 recordings/ 資料夾內所有本週新增的 .txt 通話/會議錄音稿
+        <pre class="code-block">掃描 recordings/ 資料夾內所有本週新增的 .txt 通話／會議錄音稿
 對每一份檔案:
-1. 萃取通話日期與對象(客戶名稱或會議出席者)
-2. 整理成: 決議事項(標注負責人)、待辦清單(按優先級)、待確認問題
+1. 萃取通話日期與對象（客戶名稱或會議出席者）
+2. 整理成: 決議事項（標注負責人）、待辦清單（按優先級）、待確認問題
 3. 以 YYYYMMDD_meeting.md 命名, 存入 minutes/ 資料夾
 4. 在 weekly_summary.md 最後追加一行摘要索引</pre>
       </div>
       <div class="wf-panel demo-panel" id="wf-p1">
         <p>掃描資料夾、重新命名、移動檔案:</p>
         <pre class="code-block">掃描 receipts/ 資料夾
-把所有 .jpg 和 .pdf 的收據/發票:
+把所有 .jpg 和 .pdf 的收據／發票:
 - 依日期重新命名為 YYYYMMDD_店家名稱
-- 移入對應月份子資料夾(例如 2026-06/, 沒有就建立)
+- 移入對應月份子資料夾（例如 2026-06/, 沒有就建立）
 - 把總金額與明細彙整輸出到 monthly_expense.csv, 方便報稅或記帳</pre>
       </div>
       <div class="wf-panel demo-panel" id="wf-p2">
         <p>同時讀取多份本地檔案、交叉比對後生成:</p>
         <pre class="code-block">同時讀取 data/ 資料夾內的三份檔案:
-- this_month.csv(本月各平台實際收入: 蝦皮、官網、IG)
-- last_month.csv(上月收入, 作對比)
-- target.csv(自己設定的本月目標)
+- this_month.csv（本月各平台實際收入: 蝦皮、官網、IG）
+- last_month.csv（上月收入, 作對比）
+- target.csv（自己設定的本月目標）
 
 計算: 各平台達成率、與上月相比的成長或衰退幅度
 生成一份 Marp 投影片, 給自己每月檢討用:
@@ -842,10 +841,10 @@
       <div class="wf-panel demo-panel" id="wf-p4">
         <p>比對時間戳、只補差異、追加更新現有檔案:</p>
         <pre class="code-block">讀取 index.md 的最後更新時間
-掃描 notes/ 資料夾, 找出所有在此時間之後新增或修改的讀書/工作筆記 .md 檔案
+掃描 notes/ 資料夾, 找出所有在此時間之後新增或修改的讀書／工作筆記 .md 檔案
 對這些檔案:
 1. 萃取主題關鍵字
-2. 將新條目追加至 index.md(不覆蓋現有條目)
+2. 將新條目追加至 index.md（不覆蓋現有條目）
 3. 輸出變更摘要: 「本次新增 X 篇、更新 Y 個關鍵字索引」</pre>
       </div>
       <div class="demo-controls">
