@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>第九階段, Agent SDK, 開發者建置自訂代理 — Claude Code</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+       background: #f0f4f8; color: #1a202c; line-height: 1.7; }
+
+header { background: linear-gradient(135deg, #dbeafe 0%, #f0f4f8 100%);
+         border-bottom: 1px solid #bfdbfe; padding: 48px 24px 32px; text-align: center; }
+header h1 { font-size: 2.1rem; font-weight: 700; color: #1e3a5f; }
+header p  { margin-top: 10px; color: #4a5568; font-size: 1.03rem;
+            max-width: 640px; margin-inline: auto; }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+          padding: 18px 24px; max-width: 940px; margin: 0 auto; }
+nav.toc a { font-size: 0.78rem; color: #1e40af; background: #fff; border: 1px solid #bfdbfe;
+            border-radius: 20px; padding: 6px 14px; text-decoration: none; transition: all 0.2s; }
+nav.toc a:hover { background: #dbeafe; }
+
+main    { max-width: 900px; margin: 0 auto; padding: 36px 24px 80px; }
+section { margin-bottom: 56px; scroll-margin-top: 20px; }
+h2 { font-size: 1.35rem; font-weight: 700; color: #1e40af;
+     border-left: 4px solid #3b82f6; padding-left: 14px; margin-bottom: 20px; }
+h3 { font-size: 1.02rem; font-weight: 600; color: #1a202c; margin: 20px 0 8px; }
+p  { color: #4a5568; margin-bottom: 12px; }
+
+.code-block { background: #f8fafc; border: 1px solid #cbd5e0; border-radius: 8px;
+  padding: 16px 18px; font-family: monospace; font-size: 0.82rem; color: #1a202c;
+  overflow-x: auto; margin-top: 14px; line-height: 1.7; white-space: pre; }
+.kw  { color: #7c3aed; }
+.fn  { color: #16a34a; }
+.str { color: #d97706; }
+.cmt { color: #94a3b8; font-style: italic; }
+.key { color: #2563eb; }
+
+.info-box { background: #dbeafe; border: 1px solid #93c5fd; border-radius: 10px;
+  padding: 16px 20px; margin-top: 14px; }
+.info-box .tag { display: inline-block; background: #3b82f6; color: #fff;
+  font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+  margin-bottom: 10px; letter-spacing: 0.05em; }
+.info-box p { color: #1e3a5f; font-size: 0.88rem; margin: 0; }
+
+.takeaway { background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+  border: 1px solid #4ade80; border-radius: 10px; padding: 20px 24px; margin-top: 16px; }
+.takeaway p { color: #166534; font-size: 0.9rem; margin: 0; }
+
+.api-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.field { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 14px 16px; }
+.field .name { font-family: monospace; font-size: 0.85rem; color: #16a34a; font-weight: 600; }
+.field .desc { font-size: 0.82rem; color: #4a5568; margin-top: 4px; }
+
+.event-list { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.event-item { background: #fff; border: 1px solid #cbd5e0; border-radius: 6px;
+  padding: 9px 14px; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; }
+.event-name { font-family: monospace; font-size: 0.82rem; color: #16a34a;
+  min-width: 170px; flex-shrink: 0; }
+.event-desc { font-size: 0.82rem; color: #4a5568; }
+
+.response-box { background: #fff; border: 1px solid #cbd5e0; border-radius: 10px;
+  padding: 20px; margin-top: 16px; }
+.response-field { display: flex; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+.response-field:last-child { border-bottom: none; }
+.rf-key { font-family: monospace; font-size: 0.82rem; color: #d97706; width: 150px; flex-shrink: 0; }
+.rf-val { font-size: 0.85rem; color: #374151; }
+
+.btn { padding: 9px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #1d4ed8; }
+.btn-primary:disabled { background: #cbd5e0; color: #9ca3af; cursor: default; }
+.btn-ghost { background: #fff; color: #4a5568; border: 1px solid #cbd5e0; }
+.btn-ghost:hover:not(:disabled) { color: #1a202c; border-color: #6b7280; }
+.btn-ghost:disabled { opacity: 0.4; cursor: default; }
+.step-indicator { color: #6b7280; font-size: 0.82rem; margin-left: auto; }
+
+.stage-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+.stage-tab  { padding: 7px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; border: 1px solid #cbd5e0; background: #e2e8f0; color: #4a5568; transition: all 0.2s; }
+.stage-tab.active { background: #2563eb; border-color: #3b82f6; color: #fff; }
+.stage-tab.done   { background: #166534; border-color: #4ade80; color: #dcfce7; }
+
+.demo-panel { display: none; }
+.demo-panel.visible { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+.col-card { background: #fff; border: 1px solid #cbd5e0; border-radius: 10px; padding: 16px 18px; }
+.col-card-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; color: #6b7280; margin-bottom: 10px; }
+.col-card p { font-size: 0.83rem; color: #4a5568; margin-bottom: 6px; }
+.col-card p:last-child { margin-bottom: 0; }
+
+table.ref { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.82rem; }
+table.ref th, table.ref td { border: 1px solid #cbd5e0; padding: 8px 12px; text-align: left; color: #374151; }
+table.ref th { background: #e2e8f0; color: #1a202c; font-weight: 700; }
+table.ref td:first-child, table.ref th:first-child { color: #1e40af; font-weight: 600; white-space: nowrap; }
+
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.chip-label { font-size: 0.75rem; color: #6b7280; }
+.chip { padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; border: 1px solid #cbd5e0; background: #e2e8f0; color: #4a5568; transition: all 0.2s; }
+.chip.active { background: #dcfce7; border-color: #4ade80; color: #166534; }
+
+@media (max-width: 640px) {
+  .api-fields, .two-col { grid-template-columns: 1fr; }
+  nav.toc { display: none; }
+  table.ref { font-size: 0.74rem; }
+}
+
+#themeToggle { position: fixed; top: 16px; right: 16px; z-index: 9999;
+  padding: 7px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+  cursor: pointer; border: 1px solid #cbd5e0; background: #fff; color: #1a202c;
+  transition: all 0.25s; box-shadow: 0 2px 8px rgba(0,0,0,0.12); letter-spacing: 0.03em; }
+#themeToggle:hover { border-color: #2563eb; color: #2563eb; }
+
+body.dark { background: #0f1117; color: #e2e8f0; }
+body.dark header { background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%); border-bottom-color: #2d3748; }
+body.dark header h1 { color: #f7fafc; }
+body.dark header p  { color: #a0aec0; }
+body.dark nav.toc a { background: #1a202c; border-color: #2d3748; color: #90cdf4; }
+body.dark nav.toc a:hover { background: #1e293b; }
+body.dark h2 { color: #90cdf4; border-left-color: #4299e1; }
+body.dark h3 { color: #e2e8f0; }
+body.dark p  { color: #a0aec0; }
+body.dark .code-block { background: #0d1117; border-color: #2d3748; color: #e2e8f0; }
+body.dark .kw  { color: #9f7aea; }
+body.dark .fn  { color: #68d391; }
+body.dark .str { color: #f6ad55; }
+body.dark .cmt { color: #4a5568; }
+body.dark .key { color: #63b3ed; }
+body.dark .info-box { background: #1a202c; border-color: #2a4a6a; }
+body.dark .info-box .tag { background: #2a4a6a; color: #90cdf4; }
+body.dark .info-box p { color: #a0aec0; }
+body.dark .takeaway { background: linear-gradient(135deg, #1a2a1a, #1a202c); border-color: #276749; }
+body.dark .takeaway p { color: #c6f6d5; }
+body.dark .field { background: #1a202c; border-color: #2d3748; }
+body.dark .field .name { color: #68d391; }
+body.dark .field .desc { color: #718096; }
+body.dark .event-item { background: #1a202c; border-color: #2d3748; }
+body.dark .event-name { color: #68d391; }
+body.dark .event-desc { color: #718096; }
+body.dark .response-box { background: #1a202c; border-color: #2d3748; }
+body.dark .response-field { border-bottom-color: #2d3748; }
+body.dark .rf-key { color: #f6ad55; }
+body.dark .rf-val { color: #a0aec0; }
+body.dark .btn-primary { background: #2b6cb0; }
+body.dark .btn-primary:hover:not(:disabled) { background: #3182ce; }
+body.dark .btn-primary:disabled { background: #2d3748; color: #4a5568; }
+body.dark .btn-ghost { background: transparent; color: #718096; border-color: #2d3748; }
+body.dark .btn-ghost:hover:not(:disabled) { color: #e2e8f0; border-color: #4a5568; }
+body.dark .step-indicator { color: #718096; }
+body.dark .stage-tab { background: #1a202c; border-color: #2d3748; color: #718096; }
+body.dark .stage-tab.active { background: #2b6cb0; border-color: #4299e1; color: #fff; }
+body.dark .stage-tab.done   { background: #276749; border-color: #48bb78; color: #c6f6d5; }
+body.dark .col-card { background: #1a202c; border-color: #2d3748; }
+body.dark .col-card-title { color: #4a5568; }
+body.dark .col-card p { color: #a0aec0; }
+body.dark table.ref th { background: #1a202c; color: #e2e8f0; }
+body.dark table.ref td, body.dark table.ref th { border-color: #2d3748; color: #a0aec0; }
+body.dark table.ref td:first-child, body.dark table.ref th:first-child { color: #90cdf4; }
+body.dark .chip { background: #1a202c; border-color: #2d3748; color: #718096; }
+body.dark .chip.active { background: #1c3a2a; border-color: #38a169; color: #68d391; }
+body.dark #themeToggle { background: #1a202c; color: #e2e8f0; border-color: #4a5568; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+body.dark #themeToggle:hover { border-color: #90cdf4; color: #90cdf4; }
+</style>
+</head>
+<body>
+
+<button id="themeToggle" onclick="toggleTheme()">🌙 暗色模式</button>
+
+<header>
+  <h1>第九階段, Agent SDK, 開發者建置自訂代理</h1>
+  <p>給想以程式方式建置自己代理應用的開發者, 涵蓋代理迴圈、session、工具、權限、hooks、可觀測性, 直到正式環境部署與 API 參考</p>
+</header>
+
+<nav class="toc">
+  <a href="#s1">1 · 總覽</a>
+  <a href="#s2">2 · Quickstart</a>
+  <a href="#s3">3 · Agent loop</a>
+  <a href="#s4">4 · CC 功能</a>
+  <a href="#s5">5 · 串流輸入</a>
+  <a href="#s6">6 · 串流回應</a>
+  <a href="#s7">7 · Sessions</a>
+  <a href="#s8">8 · 外部儲存</a>
+  <a href="#s9">9 · 自訂工具</a>
+  <a href="#s10">10 · MCP</a>
+  <a href="#s11">11 · Tool search</a>
+  <a href="#s12">12 · Skills</a>
+  <a href="#s13">13 · Subagents</a>
+  <a href="#s14">14 · 斜線指令</a>
+  <a href="#s15">15 · Plugins</a>
+  <a href="#s16">16 · 系統提示詞</a>
+  <a href="#s17">17 · 權限</a>
+  <a href="#s18">18 · Hooks</a>
+  <a href="#s19">19 · Checkpointing</a>
+  <a href="#s20">20 · 結構化輸出</a>
+  <a href="#s21">21 · Todo Lists</a>
+  <a href="#s22">22 · 核准與輸入</a>
+  <a href="#s23">23 · 成本追蹤</a>
+  <a href="#s24">24 · OpenTelemetry</a>
+  <a href="#s25">25 · 安全部署</a>
+  <a href="#s26">26 · Hosting</a>
+  <a href="#s27">27 · 遷移</a>
+  <a href="#s28">28 · Python 參考</a>
+  <a href="#s29">29 · TS 參考</a>
+  <a href="#s30">30 · V2 已移除</a>
+</nav>
+
+<main>
+
+<section id="s1">
+  <h2>1. Agent SDK 總覽</h2>
+  <p>Agent SDK 讓你以 Claude Code 作為函式庫建置正式環境的 AI 代理, 提供與 Claude Code 相同的工具、代理迴圈、情境管理能力, 可用 Python 與 TypeScript 程式化操作.內建工具包含 Read、Write、Edit、Bash、Monitor、Glob、Grep、WebSearch、WebFetch、AskUserQuestion, 讓代理不需要你自己實作工具執行邏輯即可開始工作.</p>
+
+  <h3>安裝</h3>
+  <pre class="code-block"><span class="cmt"># TypeScript</span>
+npm install @anthropic-ai/claude-agent-sdk
+
+<span class="cmt"># Python, 需 Python 3.10 以上</span>
+pip install claude-agent-sdk</pre>
+
+  <h3>與其他介面的差異</h3>
+  <table class="ref">
+    <tr><th>介面</th><th>特性</th></tr>
+    <tr><td>Client SDK</td><td>直接的 API 存取, 你自己實作工具執行迴圈</td></tr>
+    <tr><td>Agent SDK</td><td>Claude 自主處理工具, 與 Claude Code 同樣的代理迴圈</td></tr>
+    <tr><td>Claude Code CLI</td><td>能力相同但為互動式介面, 適合開發與一次性任務</td></tr>
+    <tr><td>Managed Agents</td><td>託管的 REST API, 由 Anthropic 代管沙盒與基礎架構</td></tr>
+  </table>
+
+  <div class="info-box">
+    <span class="tag">核心能力</span>
+    <p>內建工具, hooks（生命週期關鍵點執行自訂程式碼）, subagents（專門代理處理聚焦子任務）, MCP（連接外部系統）, permissions（控制工具使用範圍）, sessions（跨多輪維持情境, 可回復或分支）.也支援 Amazon Bedrock、Claude Platform on AWS、Google Vertex AI、Microsoft Azure 等第三方供應商.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <h2>2. Quickstart 快速入門</h2>
+  <p>這份快速入門引導建置一個能找出並修復程式錯誤的代理, 前置需求為 Node.js 18 以上或 Python 3.10 以上, 以及一個 Anthropic 帳號.</p>
+
+  <pre class="code-block"><span class="kw">async for</span> message <span class="kw">in</span> <span class="fn">query</span>(
+    prompt=<span class="str">"Review utils.py for bugs that would cause crashes. Fix any issues you find."</span>,
+    options=ClaudeAgentOptions(
+        allowed_tools=[<span class="str">"Read"</span>, <span class="str">"Edit"</span>, <span class="str">"Glob"</span>],
+        permission_mode=<span class="str">"acceptEdits"</span>,
+    ),
+):
+    ...</pre>
+
+  <p><code>query</code> 是建立代理迴圈的主要進入點, 回傳非同步疊代器.<code>prompt</code> 是你要 Claude 做的事, <code>options</code> 用來設定工具與權限.</p>
+
+  <h3>權限模式</h3>
+  <div class="chip-row">
+    <span class="chip-label">選擇模式 :</span>
+    <div class="chip q2-chip active" onclick="chipGoTo('q2',0)">acceptEdits</div>
+    <div class="chip q2-chip" onclick="chipGoTo('q2',1)">plan</div>
+    <div class="chip q2-chip" onclick="chipGoTo('q2',2)">dontAsk</div>
+    <div class="chip q2-chip" onclick="chipGoTo('q2',3)">auto</div>
+    <div class="chip q2-chip" onclick="chipGoTo('q2',4)">bypassPermissions</div>
+    <div class="chip q2-chip" onclick="chipGoTo('q2',5)">default</div>
+  </div>
+  <div class="q2-panel demo-panel visible"><p>自動核准編輯與常見檔案系統指令, 適合半自動化工作流程.</p></div>
+  <div class="q2-panel demo-panel"><p>只執行唯讀工具, 適合先探索再決定是否放行.</p></div>
+  <div class="q2-panel demo-panel"><p>拒絕不在允許清單中的任何操作, 不會詢問.</p></div>
+  <div class="q2-panel demo-panel"><p>僅 TypeScript, 用模型分類器核准或拒絕每個工具呼叫.</p></div>
+  <div class="q2-panel demo-panel"><p>完全不詢問, 需謹慎使用.</p></div>
+  <div class="q2-panel demo-panel"><p>需要 <code>canUseTool</code> 回呼處理核准, 是最保守的預設值.</p></div>
+</section>
+
+<section id="s3">
+  <h2>3. Agent loop 代理迴圈如何運作</h2>
+  <p>Agent SDK 讓你在自己的應用程式中嵌入 Claude Code 的自主代理迴圈, Claude 評估提示詞, 呼叫工具採取行動, 接收結果, 重複直到任務完成.</p>
+
+  <div class="stage-tabs">
+    <div class="loop-tab stage-tab active" onclick="stepGoTo('loop',0,4)">1 · 接收提示詞</div>
+    <div class="loop-tab stage-tab" onclick="stepGoTo('loop',1,4)">2 · 評估並回應</div>
+    <div class="loop-tab stage-tab" onclick="stepGoTo('loop',2,4)">3 · 執行工具</div>
+    <div class="loop-tab stage-tab" onclick="stepGoTo('loop',3,4)">4 · 重複</div>
+    <div class="loop-tab stage-tab" onclick="stepGoTo('loop',4,4)">5 · 回傳結果</div>
+  </div>
+  <div class="loop-panel demo-panel visible" id="loop-p0"><p>SDK 產出 <code>SystemMessage</code>, subtype 為 init.</p></div>
+  <div class="loop-panel demo-panel" id="loop-p1"><p>Claude 可能回應文字、要求工具呼叫、或兩者皆有.</p></div>
+  <div class="loop-panel demo-panel" id="loop-p2"><p>SDK 執行每個要求的工具並收集結果.</p></div>
+  <div class="loop-panel demo-panel" id="loop-p3"><p>步驟持續直到 Claude 產出沒有工具呼叫的回應.</p></div>
+  <div class="loop-panel demo-panel" id="loop-p4"><p>產出最終的 <code>AssistantMessage</code> 加上含最終文字、token 用量、成本、session ID 的 <code>ResultMessage</code>.</p></div>
+
+  <div class="info-box">
+    <span class="tag">回合與情境</span>
+    <p>一個回合（turn）是迴圈內一次來回, 可用 <code>max_turns</code> 限制工具使用回合數, <code>max_budget_usd</code> 依支出上限停止.effort 選項控制 Claude 投入多少推理, low 用於檔案查詢, medium 用於例行編輯, high 用於重構除錯, xhigh 與 max 用於需要深度分析的多步驟問題.情境視窗不會在回合之間重置, 系統提示詞、CLAUDE.md、工具定義、對話歷史都會累積, 接近上限時 SDK 會自動壓縮較舊的歷史.</p>
+  </div>
+</section>
+
+<section id="s4">
+  <h2>4. 在 SDK 中使用 Claude Code 功能</h2>
+  <p>Agent SDK 建構於與 Claude Code 相同的基礎上, SDK 代理可存取相同的檔案系統型功能, 專案指示（CLAUDE.md 與規則）、skills、hooks 等.</p>
+
+  <h3>settingSources 三種來源</h3>
+  <div class="chip-row">
+    <span class="chip-label">選擇來源 :</span>
+    <div class="chip s4-chip active" onclick="chipGoTo('s4',0)">project</div>
+    <div class="chip s4-chip" onclick="chipGoTo('s4',1)">user</div>
+    <div class="chip s4-chip" onclick="chipGoTo('s4',2)">local</div>
+  </div>
+  <div class="s4-panel demo-panel visible"><p>載入專案 CLAUDE.md、<code>.claude/rules/*.md</code>、專案 skills、專案 hooks、專案 settings.json.</p></div>
+  <div class="s4-panel demo-panel"><p>載入使用者層級 CLAUDE.md 與 skills（<code>~/.claude/</code>）.</p></div>
+  <div class="s4-panel demo-panel"><p>載入 CLAUDE.local.md 與本機 settings.json.</p></div>
+
+  <div class="info-box">
+    <span class="tag">注意</span>
+    <p>省略 <code>settingSources</code> 等同於 <code>["user", "project", "local"]</code>.管理政策設定、<code>~/.claude.json</code> 全域設定、auto memory、claude.ai MCP connectors 不受此控制, 除非個別停用.多租戶隔離務必設定 <code>settingSources: []</code> 加上 <code>CLAUDE_CODE_DISABLE_AUTO_MEMORY=1</code>.</p>
+  </div>
+</section>
+
+<section id="s5">
+  <h2>5. Streaming Input 串流輸入模式</h2>
+  <p>Agent SDK 支援兩種輸入模式, 依應用需求選擇.</p>
+
+  <div class="two-col">
+    <div class="col-card">
+      <div class="col-card-title">串流輸入模式（預設且建議）</div>
+      <p>持久互動式 session</p>
+      <p>支援圖片上傳做視覺分析</p>
+      <p>支援佇列訊息與中斷</p>
+      <p>完整工具整合, 自然的情境持續性</p>
+    </div>
+    <div class="col-card">
+      <div class="col-card-title">單一訊息輸入</div>
+      <p>使用 session 狀態與回復的一次性查詢</p>
+      <p>適合無狀態環境, 如 lambda 函式</p>
+      <p>不支援直接圖片附件</p>
+      <p>不支援即時中斷或自然多輪對話</p>
+    </div>
+  </div>
+</section>
+
+<section id="s6">
+  <h2>6. Stream responses 即時串流回應</h2>
+  <p>預設情況下, Agent SDK 在 Claude 完成每個回應後才產出完整的 <code>AssistantMessage</code>.要接收逐步增量更新, 需設定 <code>include_partial_messages</code>（Python）或 <code>includePartialMessages</code>（TypeScript）為 true.</p>
+
+  <div class="event-list">
+    <div class="event-item"><span class="event-name">message_start</span><span class="event-desc">新訊息開始</span></div>
+    <div class="event-item"><span class="event-name">content_block_start</span><span class="event-desc">新內容區塊開始, 文字或工具使用</span></div>
+    <div class="event-item"><span class="event-name">content_block_delta</span><span class="event-desc">內容的增量更新, text_delta 用於顯示文字生成過程</span></div>
+    <div class="event-item"><span class="event-name">content_block_stop</span><span class="event-desc">內容區塊結束</span></div>
+    <div class="event-item"><span class="event-name">message_delta / message_stop</span><span class="event-desc">訊息層級的更新與結束</span></div>
+  </div>
+  <div class="takeaway"><p>工具呼叫也會逐步串流, 可追蹤工具何時開始、接收其輸入、以及何時完成.</p></div>
+</section>
+
+<section id="s7">
+  <h2>7. Work with sessions 使用 session</h2>
+  <p>session 是 SDK 在代理工作時累積的對話歷史, 包含提示詞、每次工具呼叫、每個工具結果、每個回應, SDK 會自動寫入磁碟供之後回到該 session.</p>
+
+  <table class="ref">
+    <tr><th>操作</th><th>行為</th></tr>
+    <tr><td>continue</td><td>找到目前目錄中最近的 session 並接續加入新內容</td></tr>
+    <tr><td>resume</td><td>需要具體的 session ID 接續既有 session</td></tr>
+    <tr><td>fork</td><td>建立以原始歷史複本開始的新 session, 原始 session 保持不變</td></tr>
+  </table>
+
+  <p>Python 的 <code>ClaudeSDKClient</code> 會在呼叫之間內部處理 session ID, TypeScript 則傳入 <code>continue: true</code> 讓 SDK 自動挑選目前目錄中最近的 session.跨主機回復 session 需要移動 session 檔案或搭配 <code>SessionStore</code> 轉接器使用共用儲存.</p>
+</section>
+
+<section id="s8">
+  <h2>8. Persist sessions to external storage 持久化 session 至外部儲存</h2>
+  <p>預設情況下, SDK 把 session 逐字稿寫入本機檔案系統的 <code>~/.claude/projects/</code> 下的 JSONL 檔案.<code>SessionStore</code> 轉接器讓你把這些逐字稿鏡射到自己的後端, 例如 S3、Redis、或資料庫.</p>
+
+  <div class="api-fields">
+    <div class="field"><div class="name">append（必要）</div><div class="desc">寫入新的逐字稿內容</div></div>
+    <div class="field"><div class="name">load（必要）</div><div class="desc">讀回既有的逐字稿</div></div>
+    <div class="field"><div class="name">listSessions（選用）</div><div class="desc">列出可用的 session</div></div>
+    <div class="field"><div class="name">delete / listSubkeys（選用）</div><div class="desc">刪除或列出子鍵</div></div>
+  </div>
+
+  <div class="info-box">
+    <span class="tag">重要</span>
+    <p>儲存是鏡射而非取代, Claude Code 子行程一律先寫入本機磁碟, 鏡射寫入是盡力而為的, 若失敗會重試至多三次, 本機逐字稿依然完整不受影響.SDK 提供 <code>InMemorySessionStore</code> 供開發測試, 也在 TypeScript SDK 儲存庫提供 S3、Redis、Postgres 的參考轉接器.</p>
+  </div>
+</section>
+
+<section id="s9">
+  <h2>9. Give Claude custom tools 自訂工具</h2>
+  <p>自訂工具讓你擴充 Agent SDK, 定義自己的函式供 Claude 呼叫, 透過 SDK 的行程內 MCP server 存取資料庫、外部 API、或領域專屬邏輯.</p>
+
+  <div class="api-fields">
+    <div class="field"><div class="name">名稱</div><div class="desc">Claude 用來呼叫工具的唯一識別碼</div></div>
+    <div class="field"><div class="name">描述</div><div class="desc">工具做什麼, Claude 讀取以決定何時呼叫</div></div>
+    <div class="field"><div class="name">輸入結構描述</div><div class="desc">TypeScript 用 Zod, Python 用型別字典或 JSON Schema</div></div>
+    <div class="field"><div class="name">處理常式</div><div class="desc">非同步函式, 必須回傳含 content 陣列的物件</div></div>
+  </div>
+
+  <pre class="code-block"><span class="cmt">// 用 createSdkMcpServer 包裝, 在應用程式行程內執行</span>
+<span class="cmt">// 工具名稱格式, mcp__{server_name}__{tool_name}</span>
+<span class="cmt">// 需列在 allowedTools 中才能不經提示執行</span></pre>
+
+  <p>工具結果可回傳文字、圖片、音訊、resource、resource_link 區塊.處理常式若擲出未捕捉的例外會停止代理迴圈, 若捕捉錯誤並回傳 <code>isError: true</code> 則代理迴圈會繼續.</p>
+</section>
+
+<section id="s10">
+  <h2>10. Connect to external tools with MCP 連接 MCP servers</h2>
+  <p>Model Context Protocol（MCP）是連接 AI 代理與外部工具、資料來源的開放標準, 讓代理不需撰寫自訂工具實作即可查詢資料庫、整合 Slack 與 GitHub 等 API.</p>
+
+  <table class="ref">
+    <tr><th>傳輸方式</th><th>適用情境</th></tr>
+    <tr><td>stdio</td><td>文件給的是要執行的本機指令</td></tr>
+    <tr><td>HTTP / SSE</td><td>文件給的是 URL</td></tr>
+    <tr><td>SDK MCP server</td><td>自行在程式碼中建置工具, 於 SDK 應用程式內直接執行</td></tr>
+  </table>
+
+  <div class="takeaway"><p>MCP 工具需要明確權限才能被 Claude 使用, 用 <code>allowedTools</code> 加上萬用字元 <code>mcp__servername__*</code> 可核准伺服器提供的所有工具.</p></div>
+</section>
+
+<section id="s11">
+  <h2>11. Scale to many tools with tool search 用工具搜尋擴展到大量工具</h2>
+  <p>tool search 讓代理能處理數百或數千個工具, 依需求動態發現與載入, 而非把所有工具定義預先載入情境視窗.這解決情境效率（50 個工具可能用掉 1 到 2 萬個 token）與工具選擇準確度（超過 30 到 50 個工具時準確度下降）兩個挑戰.</p>
+
+  <div class="info-box">
+    <span class="tag">預設啟用</span>
+    <p>啟用時, 工具定義保留在情境視窗之外, 代理收到可用工具的摘要, 需要時搜尋並載入最相關的 3 到 5 個工具.可透過 <code>ENABLE_TOOL_SEARCH</code> 環境變數調整, 設為 <code>auto</code> 時依工具定義佔情境視窗的比例決定, <code>auto:N</code> 可自訂百分比閾值.工具少於約 10 個時預先載入全部通常更快.支援除 Haiku 以外的所有 Claude 模型.</p>
+  </div>
+</section>
+
+<section id="s12">
+  <h2>12. Agent Skills in the SDK SDK 中的 Agent Skills</h2>
+  <p>Agent Skills 讓 Claude 具備會自主呼叫的專門能力, 打包為含有指示、描述、選用支援資源的 <code>SKILL.md</code> 檔案.與 subagents（可程式化定義）不同, skills 必須建立為檔案系統產物, SDK 沒有提供程式化的 skill 註冊 API.</p>
+
+  <h3>skill 位置</h3>
+  <div class="chip-row">
+    <span class="chip-label">選擇位置 :</span>
+    <div class="chip s12-chip active" onclick="chipGoTo('s12',0)">專案 skills</div>
+    <div class="chip s12-chip" onclick="chipGoTo('s12',1)">使用者 skills</div>
+    <div class="chip s12-chip" onclick="chipGoTo('s12',2)">plugin skills</div>
+  </div>
+  <div class="s12-panel demo-panel visible"><p><code>.claude/skills/</code>, 透過 git 與團隊共享.</p></div>
+  <div class="s12-panel demo-panel"><p><code>~/.claude/skills/</code>, 跨專案的個人 skill.</p></div>
+  <div class="s12-panel demo-panel"><p>隨已安裝的 Claude Code plugin 打包.</p></div>
+
+  <p>在 <code>query()</code> 上設定 <code>skills</code> 選項控制哪些 skill 對此 session 可用, 省略時已發現的 skills 會啟用, 傳入 <code>"all"</code> 啟用全部, 傳入名稱清單只啟用特定的, 傳入 <code>[]</code> 全部停用.SKILL.md 中的 <code>allowed-tools</code> 前置資料只在直接使用 CLI 時有效, 透過 SDK 應改用主要的 <code>allowedTools</code> 選項.</p>
+</section>
+
+<section id="s13">
+  <h2>13. Subagents in the SDK SDK 中的子代理</h2>
+  <p>subagents 是主代理可以產生的獨立代理實例, 用來處理聚焦的子任務.可用程式化（<code>agents</code> 參數）、以檔案系統為基礎（<code>.claude/agents/</code>）、或內建通用型 subagent 三種方式建立.</p>
+
+  <div class="two-col">
+    <div class="col-card">
+      <div class="col-card-title">優點</div>
+      <p>情境隔離, 每個 subagent 全新對話中執行</p>
+      <p>平行化, 獨立子任務同時完成</p>
+      <p>專門的指示與知識</p>
+      <p>工具限制降低意外操作風險</p>
+    </div>
+    <div class="col-card">
+      <div class="col-card-title">AgentDefinition 主要欄位</div>
+      <p><code>description</code>（必要）, <code>prompt</code>（必要）</p>
+      <p><code>tools</code>, <code>disallowedTools</code>, <code>model</code></p>
+      <p><code>skills</code>, <code>memory</code>, <code>mcpServers</code></p>
+      <p><code>maxTurns</code>, <code>background</code>, <code>effort</code>, <code>permissionMode</code></p>
+    </div>
+  </div>
+  <div class="takeaway"><p>subagent 的情境視窗全新開始, 但不是空的, 唯一從父層到 subagent 的管道是 Agent 工具的提示詞字串.</p></div>
+</section>
+
+<section id="s14">
+  <h2>14. Slash Commands in the SDK SDK 中的斜線指令</h2>
+  <p>斜線指令提供以 <code>/</code> 開頭的特殊指令控制 Claude Code session, 透過在提示詞字串中包含即可送出, 就像一般文字一樣.只有不需要互動式終端機即可運作的指令才能透過 SDK 派送.</p>
+
+  <pre class="code-block"><span class="cmt">/compact</span>  <span class="cmt"># 壓縮對話歷史, 摘要較舊訊息同時保留重要情境</span>
+<span class="cmt">/clear</span>    <span class="cmt"># 重置對話為空情境</span></pre>
+
+  <p>自訂斜線指令定義為特定目錄中的 markdown 檔案, 建議格式是 <code>.claude/skills/&lt;name&gt;/SKILL.md</code>（<code>.claude/commands/</code> 為舊格式）.支援 <code>$0</code>、<code>$1</code> 等佔位符處理動態引數, <code>!</code> 前綴執行 bash 指令並納入輸出, <code>@</code> 前綴引用檔案內容.</p>
+</section>
+
+<section id="s15">
+  <h2>15. Plugins in the SDK SDK 中的外掛</h2>
+  <p>plugins 讓你用可跨專案共享的自訂功能擴充 Claude Code.透過 Agent SDK, 可程式化從本機目錄載入 plugins, 為代理 session 加入 skills、agents、hooks、MCP servers.</p>
+
+  <div class="info-box">
+    <span class="tag">限制</span>
+    <p>載入時 <code>type</code> 欄位必須是 <code>"local"</code>, 這是 SDK 唯一接受的值.要使用透過 marketplace 或遠端儲存庫散布的 plugin, 需先下載再提供本機目錄路徑, 路徑應指向 plugin 根目錄.</p>
+  </div>
+  <p>plugin 成功載入後會出現在系統初始化訊息中, 可檢查 <code>message.plugins</code>、<code>message.skills</code>、<code>message.slash_commands</code> 驗證.plugin 提供的 skills 會自動以 plugin 名稱加上命名空間避免衝突, 直接呼叫時送出 <code>/plugin-name:skill-name</code>.</p>
+</section>
+
+<section id="s16">
+  <h2>16. Modifying system prompts 修改系統提示詞</h2>
+  <p>系統提示詞定義 Claude 的行為、能力、回應風格.Agent SDK 有三個起始點.</p>
+
+  <table class="ref">
+    <tr><th>起始點</th><th>說明 / 適用情境</th></tr>
+    <tr><td>最小預設值</td><td>未設定時, 涵蓋工具呼叫但省略 Claude Code 編碼指引</td></tr>
+    <tr><td>claude_code 預設值</td><td>CLI 使用的完整系統提示詞, 適合建置類似 Claude Code 的工具</td></tr>
+    <tr><td>自訂字串</td><td>你自己撰寫, SDK 只送出你提供的內容, 適合不同介面或權限模型</td></tr>
+  </table>
+
+  <p>CLAUDE.md 給 Claude 持久的專案情境, SDK 把其內容注入對話而非系統提示詞, 因此可搭配任何系統提示詞設定運作.output styles 是儲存的設定, 以 markdown 檔案儲存, 可跨 session 與專案重複使用.</p>
+</section>
+
+<section id="s17">
+  <h2>17. Configure permissions 設定權限</h2>
+  <p>Claude 要求工具時, SDK 依序檢查權限.</p>
+
+  <div class="stage-tabs">
+    <div class="s17-tab stage-tab active" onclick="stepGoTo('s17',0,5)">1 · hooks</div>
+    <div class="s17-tab stage-tab" onclick="stepGoTo('s17',1,5)">2 · 拒絕規則</div>
+    <div class="s17-tab stage-tab" onclick="stepGoTo('s17',2,5)">3 · 詢問規則</div>
+    <div class="s17-tab stage-tab" onclick="stepGoTo('s17',3,5)">4 · 權限模式</div>
+    <div class="s17-tab stage-tab" onclick="stepGoTo('s17',4,5)">5 · 允許規則</div>
+    <div class="s17-tab stage-tab" onclick="stepGoTo('s17',5,5)">6 · canUseTool</div>
+  </div>
+  <div class="s17-panel demo-panel visible" id="s17-p0"><p>可直接拒絕呼叫或放行.</p></div>
+  <div class="s17-panel demo-panel" id="s17-p1"><p>來自 disallowed_tools 與 settings.json, 即使在 bypassPermissions 模式下也會封鎖.</p></div>
+  <div class="s17-panel demo-panel" id="s17-p2"><p>符合時會落到 canUseTool 回呼確認.</p></div>
+  <div class="s17-panel demo-panel" id="s17-p3"><p>bypassPermissions 核准到達此步驟的一切.</p></div>
+  <div class="s17-panel demo-panel" id="s17-p4"><p>符合允許規則即核准.</p></div>
+  <div class="s17-panel demo-panel" id="s17-p5"><p>若前述都未解決, 呼叫此回呼做最終決定.</p></div>
+
+  <p><code>allowed_tools</code> 只影響核准, 未列出的工具仍可用並落到權限模式.<code>disallowed_tools</code> 中裸名稱如 <code>Bash</code> 會把工具定義整個移除, 限定規則如 <code>Bash(rm *)</code> 則保留工具可用但拒絕符合的呼叫.</p>
+</section>
+
+<section id="s18">
+  <h2>18. Intercept and control agent behavior with hooks SDK 中的 hooks</h2>
+  <p>hooks 是在代理事件發生時執行你程式碼的回呼函式, 可在危險操作執行前封鎖它們、記錄並稽核每次工具呼叫、轉換輸入輸出、要求人工核准敏感動作.</p>
+
+  <div class="event-list">
+    <div class="event-item"><span class="event-name">PreToolUse</span><span class="event-desc">工具呼叫請求, 可封鎖或修改</span></div>
+    <div class="event-item"><span class="event-name">PostToolUse</span><span class="event-desc">工具執行結果</span></div>
+    <div class="event-item"><span class="event-name">UserPromptSubmit</span><span class="event-desc">使用者提示詞送出</span></div>
+    <div class="event-item"><span class="event-name">Stop</span><span class="event-desc">代理執行停止</span></div>
+    <div class="event-item"><span class="event-name">SubagentStart / SubagentStop</span><span class="event-desc">子代理啟動與結束</span></div>
+    <div class="event-item"><span class="event-name">PreCompact</span><span class="event-desc">對話壓縮請求</span></div>
+    <div class="event-item"><span class="event-name">PermissionRequest</span><span class="event-desc">權限請求, 部分事件僅 TypeScript SDK 支援</span></div>
+  </div>
+
+  <div class="takeaway"><p>每個 hook 回呼收到輸入資料、工具使用 ID、情境三個引數, <code>hookSpecificOutput</code> 中的 <code>permissionDecision</code> 可設為 allow、deny、ask、defer.hooks 在你的應用程式行程中執行, 不消耗代理的情境視窗.</p></div>
+</section>
+
+<section id="s19">
+  <h2>19. Rewind file changes with checkpointing SDK 中的檔案回退</h2>
+  <p>檔案 checkpointing 追蹤透過 Write、Edit、NotebookEdit 工具在代理 session 期間所做的檔案修改, 讓你能把檔案回退到任何先前狀態.透過 Bash 指令（如 <code>echo > file.txt</code>）做的變更不會被捕捉.</p>
+
+  <div class="stage-tabs">
+    <div class="s19-tab stage-tab active" onclick="stepGoTo('s19',0,2)">1 · 啟用</div>
+    <div class="s19-tab stage-tab" onclick="stepGoTo('s19',1,2)">2 · 擷取 checkpoint</div>
+    <div class="s19-tab stage-tab" onclick="stepGoTo('s19',2,2)">3 · 回退</div>
+  </div>
+  <div class="s19-panel demo-panel visible" id="s19-p0"><p>在選項中啟用 <code>enable_file_checkpointing=True</code> 並設定 <code>extra_args={"replay-user-messages": None}</code>.</p></div>
+  <div class="s19-panel demo-panel" id="s19-p1"><p>從第一則使用者訊息擷取回應串流中的 checkpoint UUID.</p></div>
+  <div class="s19-panel demo-panel" id="s19-p2"><p>以空提示詞回復該 session 並呼叫 <code>rewindFiles()</code>, 只回復磁碟上的檔案, 不會回退對話本身.</p></div>
+
+  <div class="info-box">
+    <span class="tag">限制</span>
+    <p>只追蹤 Write/Edit/NotebookEdit 工具, checkpoint 綁定於建立它的 session, 只回退檔案內容不含目錄的建立或刪除, 只支援本機檔案.</p>
+  </div>
+</section>
+
+<section id="s20">
+  <h2>20. Get structured output from agents 取得結構化輸出</h2>
+  <p>結構化輸出讓你定義想要從代理取得的資料確切形狀.代理仍可使用任何需要的工具完成任務, 最後取得符合結構描述的驗證 JSON, 不符合時重新提示.</p>
+
+  <pre class="code-block"><span class="cmt">// 透過 outputFormat（TS）或 output_format（Python）傳入 JSON Schema</span>
+<span class="cmt">// 完成後, ResultMessage 包含 structured_output 欄位</span>
+<span class="cmt">// 可用 Zod（TS）或 Pydantic（Python）定義結構描述並產生 JSON Schema</span></pre>
+
+  <div class="info-box">
+    <span class="tag">失敗情境</span>
+    <p>結構描述過於複雜、任務本身模糊不清、或達到重試上限時可能失敗.結果訊息 <code>subtype</code> 為 <code>error_max_structured_output_retries</code> 表示這種失敗, 應檢查此欄位以區分驗證失敗與模型回退撤回輸出.</p>
+  </div>
+</section>
+
+<section id="s21">
+  <h2>21. Todo Lists 待辦清單追蹤</h2>
+  <p>待辦清單追蹤提供有結構的方式管理任務並向使用者顯示進度.自 TypeScript Agent SDK 0.3.142 與 Claude Code v2.1.142 起, session 改用結構化的 Task 工具 <code>TaskCreate</code>、<code>TaskUpdate</code>、<code>TaskGet</code>、<code>TaskList</code> 取代 <code>TodoWrite</code>.</p>
+
+  <div class="event-list">
+    <div class="event-item"><span class="event-name">pending</span><span class="event-desc">識別出任務時建立</span></div>
+    <div class="event-item"><span class="event-name">in_progress</span><span class="event-desc">開始工作時啟動</span></div>
+    <div class="event-item"><span class="event-name">completed</span><span class="event-desc">任務成功結束時完成</span></div>
+    <div class="event-item"><span class="event-name">移除</span><span class="event-desc">群組中所有任務都完成時</span></div>
+  </div>
+  <p>SDK 會為需要 3 個以上明確動作的複雜多步驟任務、使用者提供的任務清單、非瑣碎操作、使用者明確要求時自動建立待辦.監控程式碼仍檢視助理串流中的 <code>tool_use</code> 區塊, 但改為依任務 ID 維護對照表而非在每次呼叫時取代整個清單.</p>
+</section>
+
+<section id="s22">
+  <h2>22. Handle approvals and user input 處理核准與使用者輸入</h2>
+  <p>Claude 在兩種情況下會要求使用者輸入, 需要工具使用權限、以及有澄清性問題時（透過 <code>AskUserQuestion</code> 工具）.兩者都會觸發你的 <code>canUseTool</code> 回呼, 暫停執行直到你回傳回應.</p>
+
+  <div class="two-col">
+    <div class="col-card">
+      <div class="col-card-title">回呼觸發時機</div>
+      <p>工具需要核准, 未被權限規則或模式自動核准</p>
+      <p>Claude 提出問題, 呼叫 AskUserQuestion 工具</p>
+      <p>自動核准的工具永遠不會觸發此回呼</p>
+    </div>
+    <div class="col-card">
+      <div class="col-card-title">回呼可回傳的決定</div>
+      <p>允許（PermissionResultAllow）或拒絕（PermissionResultDeny）</p>
+      <p>修改工具輸入</p>
+      <p>核准並記住, 回傳建議規則避免下次再詢問</p>
+      <p>拒絕並建議替代方案, 或完全重新導向</p>
+    </div>
+  </div>
+  <div class="takeaway"><p>若需要套用到每次工具呼叫的邏輯, 應使用 <code>PreToolUse</code> hook 而非 <code>canUseTool</code>.</p></div>
+</section>
+
+<section id="s23">
+  <h2>23. Track cost and usage 追蹤成本與用量</h2>
+  <p>Agent SDK 為每次與 Claude 的互動提供詳細的 token 用量資訊.<code>total_cost_usd</code> 與 <code>costUSD</code> 欄位是客戶端估算值, 並非權威計費資料, 正式計費應使用 Usage and Cost API 或 Claude Console.</p>
+
+  <div class="api-fields">
+    <div class="field"><div class="name">query() 呼叫</div><div class="desc">一次呼叫可能涉及多個步驟</div></div>
+    <div class="field"><div class="name">步驟</div><div class="desc">一次請求回應循環</div></div>
+    <div class="field"><div class="name">session</div><div class="desc">用 resume 選項串連的一系列 query() 呼叫</div></div>
+    <div class="field"><div class="name">modelUsage</div><div class="desc">依模型分類的 token 計數與成本細目</div></div>
+  </div>
+  <div class="info-box"><span class="tag">注意</span><p>當 Claude 平行呼叫多個工具時, 該回合中的所有訊息共用同一個 ID, 需依 ID 去除重複才能避免重複計算.</p></div>
+</section>
+
+<section id="s24">
+  <h2>24. Observability with OpenTelemetry SDK 的可觀測性</h2>
+  <p>Agent SDK 可把追蹤、指標、事件匯出為 OpenTelemetry 資料到任何接受 OTLP 的後端, 如 Honeycomb、Datadog、Grafana、Langfuse.SDK 執行 Claude Code CLI 作為子行程, CLI 內建監測工具, SDK 本身不產生遙測資料.</p>
+
+  <table class="ref">
+    <tr><th>訊號</th><th>內容</th><th>啟用開關</th></tr>
+    <tr><td>指標</td><td>token、成本、session 等計數器</td><td>OTEL_METRICS_EXPORTER</td></tr>
+    <tr><td>日誌事件</td><td>提示詞、API 請求、API 錯誤、工具結果的結構化紀錄</td><td>OTEL_LOGS_EXPORTER</td></tr>
+    <tr><td>追蹤（beta）</td><td>每次互動、模型請求、工具呼叫、hook 的 span</td><td>OTEL_TRACES_EXPORTER + CLAUDE_CODE_ENHANCED_TELEMETRY_BETA=1</td></tr>
+  </table>
+  <p>SDK 會自動把 W3C trace context 傳播進 CLI 子行程, 讓代理執行過程出現在你應用程式的追蹤中而非獨立的根節點.</p>
+</section>
+
+<section id="s25">
+  <h2>25. Securely deploying AI agents 安全部署 AI 代理</h2>
+  <p>Claude Code 與 Agent SDK 能執行程式碼、存取檔案、代表你與外部服務互動, 其行為可能受到處理內容（檔案、網頁、使用者輸入）影響, 有時稱為提示注入.安全部署適用執行任何半信任程式碼的相同原則, 隔離、最小權限、縱深防禦.</p>
+
+  <table class="ref">
+    <tr><th>隔離技術</th><th>隔離強度</th><th>效能負擔</th></tr>
+    <tr><td>sandbox runtime</td><td>輕量</td><td>低</td></tr>
+    <tr><td>containers</td><td>設定決定</td><td>視設定而定</td></tr>
+    <tr><td>gVisor</td><td>優異</td><td>中高</td></tr>
+    <tr><td>VMs</td><td>優異</td><td>高</td></tr>
+  </table>
+  <div class="takeaway"><p>建議把敏感資源（如憑證）放在包含代理的邊界之外, 例如透過代理外部執行的 proxy 注入 API 金鑰.核心模式是代理透過掛載的 Unix socket 與外部代理程式溝通, 即使代理被入侵也無法任意外洩資料.</p></div>
+</section>
+
+<section id="s26">
+  <h2>26. Hosting the Agent SDK 部署 Agent SDK</h2>
+  <p>Agent SDK 產生並監督一個 <code>claude</code> CLI 子行程, 擁有 shell、工作目錄、以及磁碟上的 session 檔案.每個 session 對應一個子行程, 三種狀態預設存在本機磁碟（session 逐字稿、CLAUDE.md 記憶檔案、工作目錄產物）, 不會在容器重啟或縮減規模時存活.</p>
+
+  <table class="ref">
+    <tr><th>Session 模式</th><th>說明</th></tr>
+    <tr><td>一次性 session</td><td>為每個使用者任務建立容器並在完成後銷毀</td></tr>
+    <tr><td>長期執行 session</td><td>執行持久的容器實例服務持續工作</td></tr>
+    <tr><td>混合 session</td><td>一次性容器啟動時從 SessionStore 補水並持久化更新回去</td></tr>
+    <tr><td>多代理容器</td><td>一個容器內執行多個 SDK 子行程做緊密協作</td></tr>
+  </table>
+  <p>正式環境考量包含 session 與狀態持久化、可觀測性（容器或編排器層級設定 OTEL 環境變數）、驗證與密鑰（子行程讀取 ANTHROPIC_API_KEY 或透過 proxy 注入）、擴展與並行（並行數受限於主機 RAM）、多租戶隔離（<code>settingSources: []</code> 加上每租戶工作目錄與 CLAUDE_CONFIG_DIR）.</p>
+</section>
+
+<section id="s27">
+  <h2>27. Migrate to Claude Agent SDK 遷移到 Claude Agent SDK</h2>
+  <p>Claude Code SDK 已改名為 Claude Agent SDK, 反映 SDK 除了編碼任務之外更廣泛的能力.</p>
+
+  <pre class="code-block"><span class="cmt">// TypeScript</span>
+@anthropic-ai/claude-code  <span class="kw">→</span>  @anthropic-ai/claude-agent-sdk
+
+<span class="cmt">// Python</span>
+claude-code-sdk  <span class="kw">→</span>  claude-agent-sdk
+
+<span class="cmt">// Python 型別</span>
+ClaudeCodeOptions  <span class="kw">→</span>  ClaudeAgentOptions</pre>
+
+  <div class="info-box">
+    <span class="tag">重大變更</span>
+    <p>系統提示詞不再預設使用 Claude Code 的版本, v0.1.0 起預設用最小系統提示詞, 要取得舊行為需明確設定 <code>systemPrompt: { type: "preset", preset: "claude_code" }</code>.設定來源預設值曾短暫變更後又還原, 目前省略 <code>settingSources</code> 等同載入使用者、專案、本機層級設定, 與 CLI 行為一致.</p>
+  </div>
+</section>
+
+<section id="s28">
+  <h2>28. Agent SDK reference, Python Python SDK 參考</h2>
+  <p>這是 Python Agent SDK 的完整 API 參考文件, 涵蓋兩種互動方式的選擇.</p>
+
+  <div class="two-col">
+    <div class="col-card">
+      <div class="col-card-title">query()</div>
+      <p>每次呼叫預設建立新 session</p>
+      <p>適合一次性任務、獨立且不需要先前情境的任務</p>
+      <p>適合簡單的自動化腳本</p>
+    </div>
+    <div class="col-card">
+      <div class="col-card-title">ClaudeSDKClient</div>
+      <p>沿用同一個 session</p>
+      <p>支援中斷、hooks、自訂工具、自動延續對話</p>
+      <p>適合需要 Claude 記住情境的持續對話</p>
+    </div>
+  </div>
+  <div class="takeaway"><p>文件詳細列出 <code>ClaudeAgentOptions</code> 的完整欄位（模型、權限模式、hooks、agents、mcp_servers、system_prompt、setting_sources、resume、fork_session、max_turns、max_budget_usd、effort、output_format、session_store、env、cwd 等）以及訊息與資料結構型別, 由於是逐項列舉格式, 本課程只摘要其分類架構, 詳細簽章請查閱官方文件.</p></div>
+</section>
+
+<section id="s29">
+  <h2>29. Agent SDK reference, TypeScript TypeScript SDK 參考</h2>
+  <p>這是 TypeScript Agent SDK 的完整 API 參考文件.SDK 會為你的平台以選用相依套件形式綁定原生 Claude Code 執行檔（例如 <code>@anthropic-ai/claude-agent-sdk-darwin-arm64</code>）, 因此不需要另外安裝 Claude Code.</p>
+
+  <div class="info-box">
+    <span class="tag">bun build --compile</span>
+    <p>編譯成單一執行檔時, 需要用 <code>extractFromBunfs()</code> 把平台執行檔抽取到實際路徑並傳給 <code>pathToClaudeCodeExecutable</code>.</p>
+  </div>
+  <p>文件涵蓋 <code>query()</code> 函式簽章與回傳的 query 物件（含 <code>streamInput()</code>、<code>setPermissionMode()</code>、<code>rewindFiles()</code>、<code>interrupt()</code> 等方法）、完整的 <code>Options</code> 型別、<code>SDKMessage</code> 聯合型別家族、<code>tool()</code> 與 <code>createSdkMcpServer()</code> 輔助函式、<code>AgentDefinition</code>、<code>HookCallback</code>、<code>PermissionUpdate</code>、<code>SessionStore</code> 介面等.與 Python 參考相同, 本課程摘要其分類架構, 詳細型別定義請查閱官方文件.</p>
+</section>
+
+<section id="s30">
+  <h2>30. TypeScript SDK V2 session API 已移除</h2>
+  <p>V2 session API 已不再支援, TypeScript Agent SDK 0.3.142 移除了 <code>unstable_v2_createSession</code>、<code>unstable_v2_resumeSession</code>、<code>unstable_v2_prompt</code>, 以及 <code>SDKSession</code> 與 <code>SDKSessionOptions</code> 型別.</p>
+
+  <div class="info-box">
+    <span class="tag">已移除</span>
+    <p>V2 曾是實驗性的 session API, 免除非同步產生器與 yield 協調的需求, 改用每回合各自的 <code>send()</code>/<code>stream()</code> 循環, API 簡化為三個概念, <code>createSession()</code>/<code>resumeSession()</code> 開始或延續對話、<code>session.send()</code> 送出訊息、<code>session.stream()</code> 取得回應.</p>
+  </div>
+  <div class="takeaway"><p>要遷移, 應改用 <code>query()</code> API 加上其接受的 session 選項, 傳入 <code>AsyncIterable&lt;SDKUserMessage&gt;</code> 做多輪對話, 或用 <code>options.resume</code> 延續已儲存的 session.這頁文件僅保留供維護 Agent SDK 0.2.x 以下版本程式碼的人參考.</p></div>
+</section>
+
+</main>
+
+<script>
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark');
+  document.getElementById('themeToggle').textContent = isDark ? '☀ 亮色模式' : '🌙 暗色模式';
+}
+
+function chipGoTo(prefix, n) {
+  document.querySelectorAll('.' + prefix + '-panel').forEach((el, i) =>
+    el.classList.toggle('visible', i === n));
+  document.querySelectorAll('.' + prefix + '-chip').forEach((c, i) =>
+    c.classList.toggle('active', i === n));
+}
+
+function stepGoTo(prefix, n, max) {
+  n = Math.max(0, Math.min(max, n));
+  document.querySelectorAll('.' + prefix + '-panel').forEach((el, i) =>
+    el.classList.toggle('visible', i === n));
+  document.querySelectorAll('.' + prefix + '-tab').forEach((t, i) => {
+    t.classList.remove('active', 'done');
+    if (i === n) t.classList.add('active');
+    else if (i < n) t.classList.add('done');
+  });
+}
+</script>
+</body>
+</html>

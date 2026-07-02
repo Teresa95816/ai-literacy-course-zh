@@ -37,12 +37,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://allenintaipei.github.io/ai-literacy-course-zh/cpn-learning-path.html</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://allenintaipei.github.io/ai-literacy-course-zh/llm-agent-stack.html</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>

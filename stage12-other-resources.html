@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>第十二階段, 其他資源 — Claude Code</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+       background: #f0f4f8; color: #1a202c; line-height: 1.7; }
+
+header { background: linear-gradient(135deg, #dbeafe 0%, #f0f4f8 100%);
+         border-bottom: 1px solid #bfdbfe; padding: 48px 24px 32px; text-align: center; }
+header h1 { font-size: 2.1rem; font-weight: 700; color: #1e3a5f; }
+header p  { margin-top: 10px; color: #4a5568; font-size: 1.03rem;
+            max-width: 640px; margin-inline: auto; }
+
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+          padding: 18px 24px; max-width: 940px; margin: 0 auto; }
+nav.toc a { font-size: 0.78rem; color: #1e40af; background: #fff; border: 1px solid #bfdbfe;
+            border-radius: 20px; padding: 6px 14px; text-decoration: none; transition: all 0.2s; }
+nav.toc a:hover { background: #dbeafe; }
+
+main    { max-width: 900px; margin: 0 auto; padding: 36px 24px 80px; }
+section { margin-bottom: 56px; scroll-margin-top: 20px; }
+h2 { font-size: 1.35rem; font-weight: 700; color: #1e40af;
+     border-left: 4px solid #3b82f6; padding-left: 14px; margin-bottom: 20px; }
+h3 { font-size: 1.02rem; font-weight: 600; color: #1a202c; margin: 20px 0 8px; }
+p  { color: #4a5568; margin-bottom: 12px; }
+
+.code-block { background: #f8fafc; border: 1px solid #cbd5e0; border-radius: 8px;
+  padding: 16px 18px; font-family: monospace; font-size: 0.82rem; color: #1a202c;
+  overflow-x: auto; margin-top: 14px; line-height: 1.7; white-space: pre; }
+.kw  { color: #7c3aed; }
+.fn  { color: #16a34a; }
+.str { color: #d97706; }
+.cmt { color: #94a3b8; font-style: italic; }
+.key { color: #2563eb; }
+
+.info-box { background: #dbeafe; border: 1px solid #93c5fd; border-radius: 10px;
+  padding: 16px 20px; margin-top: 14px; }
+.info-box .tag { display: inline-block; background: #3b82f6; color: #fff;
+  font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+  margin-bottom: 10px; letter-spacing: 0.05em; }
+.info-box p { color: #1e3a5f; font-size: 0.88rem; margin: 0; }
+
+.takeaway { background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+  border: 1px solid #4ade80; border-radius: 10px; padding: 20px 24px; margin-top: 16px; }
+.takeaway p { color: #166534; font-size: 0.9rem; margin: 0; }
+
+.api-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.field { background: #fff; border: 1px solid #cbd5e0; border-radius: 8px; padding: 14px 16px; }
+.field .name { font-family: monospace; font-size: 0.85rem; color: #16a34a; font-weight: 600; }
+.field .desc { font-size: 0.82rem; color: #4a5568; margin-top: 4px; }
+
+.event-list { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.event-item { background: #fff; border: 1px solid #cbd5e0; border-radius: 6px;
+  padding: 9px 14px; display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; }
+.event-name { font-family: monospace; font-size: 0.82rem; color: #16a34a;
+  min-width: 170px; flex-shrink: 0; }
+.event-desc { font-size: 0.82rem; color: #4a5568; }
+
+.response-box { background: #fff; border: 1px solid #cbd5e0; border-radius: 10px;
+  padding: 20px; margin-top: 16px; }
+.response-field { display: flex; gap: 16px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+.response-field:last-child { border-bottom: none; }
+.rf-key { font-family: monospace; font-size: 0.82rem; color: #d97706; width: 150px; flex-shrink: 0; }
+.rf-val { font-size: 0.85rem; color: #374151; }
+
+.btn { padding: 9px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s; }
+.btn-primary { background: #2563eb; color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #1d4ed8; }
+.btn-primary:disabled { background: #cbd5e0; color: #9ca3af; cursor: default; }
+.btn-ghost { background: #fff; color: #4a5568; border: 1px solid #cbd5e0; }
+.btn-ghost:hover:not(:disabled) { color: #1a202c; border-color: #6b7280; }
+.btn-ghost:disabled { opacity: 0.4; cursor: default; }
+.step-indicator { color: #6b7280; font-size: 0.82rem; margin-left: auto; }
+
+.stage-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+.stage-tab  { padding: 7px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; border: 1px solid #cbd5e0; background: #e2e8f0; color: #4a5568; transition: all 0.2s; }
+.stage-tab.active { background: #2563eb; border-color: #3b82f6; color: #fff; }
+.stage-tab.done   { background: #166534; border-color: #4ade80; color: #dcfce7; }
+
+.demo-panel { display: none; }
+.demo-panel.visible { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+.col-card { background: #fff; border: 1px solid #cbd5e0; border-radius: 10px; padding: 16px 18px; }
+.col-card-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; color: #6b7280; margin-bottom: 10px; }
+.col-card p { font-size: 0.83rem; color: #4a5568; margin-bottom: 6px; }
+.col-card p:last-child { margin-bottom: 0; }
+
+table.ref { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.82rem; }
+table.ref th, table.ref td { border: 1px solid #cbd5e0; padding: 8px 12px; text-align: left; color: #374151; }
+table.ref th { background: #e2e8f0; color: #1a202c; font-weight: 700; }
+table.ref td:first-child, table.ref th:first-child { color: #1e40af; font-weight: 600; white-space: nowrap; }
+
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.chip-label { font-size: 0.75rem; color: #6b7280; }
+.chip { padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; border: 1px solid #cbd5e0; background: #e2e8f0; color: #4a5568; transition: all 0.2s; }
+.chip.active { background: #dcfce7; border-color: #4ade80; color: #166534; }
+
+@media (max-width: 640px) {
+  .api-fields, .two-col { grid-template-columns: 1fr; }
+  nav.toc { display: none; }
+  table.ref { font-size: 0.74rem; }
+}
+
+#themeToggle { position: fixed; top: 16px; right: 16px; z-index: 9999;
+  padding: 7px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+  cursor: pointer; border: 1px solid #cbd5e0; background: #fff; color: #1a202c;
+  transition: all 0.25s; box-shadow: 0 2px 8px rgba(0,0,0,0.12); letter-spacing: 0.03em; }
+#themeToggle:hover { border-color: #2563eb; color: #2563eb; }
+
+body.dark { background: #0f1117; color: #e2e8f0; }
+body.dark header { background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%); border-bottom-color: #2d3748; }
+body.dark header h1 { color: #f7fafc; }
+body.dark header p  { color: #a0aec0; }
+body.dark nav.toc a { background: #1a202c; border-color: #2d3748; color: #90cdf4; }
+body.dark nav.toc a:hover { background: #1e293b; }
+body.dark h2 { color: #90cdf4; border-left-color: #4299e1; }
+body.dark h3 { color: #e2e8f0; }
+body.dark p  { color: #a0aec0; }
+body.dark .code-block { background: #0d1117; border-color: #2d3748; color: #e2e8f0; }
+body.dark .kw  { color: #9f7aea; }
+body.dark .fn  { color: #68d391; }
+body.dark .str { color: #f6ad55; }
+body.dark .cmt { color: #4a5568; }
+body.dark .key { color: #63b3ed; }
+body.dark .info-box { background: #1a202c; border-color: #2a4a6a; }
+body.dark .info-box .tag { background: #2a4a6a; color: #90cdf4; }
+body.dark .info-box p { color: #a0aec0; }
+body.dark .takeaway { background: linear-gradient(135deg, #1a2a1a, #1a202c); border-color: #276749; }
+body.dark .takeaway p { color: #c6f6d5; }
+body.dark .field { background: #1a202c; border-color: #2d3748; }
+body.dark .field .name { color: #68d391; }
+body.dark .field .desc { color: #718096; }
+body.dark .event-item { background: #1a202c; border-color: #2d3748; }
+body.dark .event-name { color: #68d391; }
+body.dark .event-desc { color: #718096; }
+body.dark .response-box { background: #1a202c; border-color: #2d3748; }
+body.dark .response-field { border-bottom-color: #2d3748; }
+body.dark .rf-key { color: #f6ad55; }
+body.dark .rf-val { color: #a0aec0; }
+body.dark .btn-primary { background: #2b6cb0; }
+body.dark .btn-primary:hover:not(:disabled) { background: #3182ce; }
+body.dark .btn-primary:disabled { background: #2d3748; color: #4a5568; }
+body.dark .btn-ghost { background: transparent; color: #718096; border-color: #2d3748; }
+body.dark .btn-ghost:hover:not(:disabled) { color: #e2e8f0; border-color: #4a5568; }
+body.dark .step-indicator { color: #718096; }
+body.dark .stage-tab { background: #1a202c; border-color: #2d3748; color: #718096; }
+body.dark .stage-tab.active { background: #2b6cb0; border-color: #4299e1; color: #fff; }
+body.dark .stage-tab.done   { background: #276749; border-color: #48bb78; color: #c6f6d5; }
+body.dark .col-card { background: #1a202c; border-color: #2d3748; }
+body.dark .col-card-title { color: #4a5568; }
+body.dark .col-card p { color: #a0aec0; }
+body.dark table.ref th { background: #1a202c; color: #e2e8f0; }
+body.dark table.ref td, body.dark table.ref th { border-color: #2d3748; color: #a0aec0; }
+body.dark table.ref td:first-child, body.dark table.ref th:first-child { color: #90cdf4; }
+body.dark .chip { background: #1a202c; border-color: #2d3748; color: #718096; }
+body.dark .chip.active { background: #1c3a2a; border-color: #38a169; color: #68d391; }
+body.dark #themeToggle { background: #1a202c; color: #e2e8f0; border-color: #4a5568; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+body.dark #themeToggle:hover { border-color: #90cdf4; color: #90cdf4; }
+</style>
+</head>
+<body>
+
+<button id="themeToggle" onclick="toggleTheme()">🌙 暗色模式</button>
+
+<header>
+  <h1>第十二階段, 其他資源</h1>
+  <p>推廣, 溝通與延伸閱讀素材, 從進階決策工具到組織內部推廣的實用手冊</p>
+</header>
+
+<nav class="toc">
+  <a href="#s1">1 · Advisor</a>
+  <a href="#s2">2 · Champion kit</a>
+  <a href="#s3">3 · 溝通套件</a>
+  <a href="#s4">4 · 提示詞庫</a>
+  <a href="#s5">5 · Changelog</a>
+</nav>
+
+<main>
+
+<section id="s1">
+  <h2>1. Escalate hard decisions with the advisor tool 用 advisor 工具升級困難決策</h2>
+  <p>advisor 工具讓 Claude 在任務關鍵時刻（決定方案前, 卡在重複出現的錯誤時, 宣告任務完成前）諮詢第二個, 通常更強的模型.advisor 收到完整對話並回傳 Claude 會採納的建議, 為實驗性功能, 僅支援 Anthropic API.</p>
+
+  <h3>三種設定方式</h3>
+  <div class="chip-row">
+    <span class="chip-label">選擇方式 :</span>
+    <div class="chip s1-chip active" onclick="chipGoTo('s1',0)">/advisor 指令</div>
+    <div class="chip s1-chip" onclick="chipGoTo('s1',1)">advisorModel 設定</div>
+    <div class="chip s1-chip" onclick="chipGoTo('s1',2)">--advisor 旗標</div>
+  </div>
+  <div class="s1-panel demo-panel visible"><p>互動選擇 advisor 模型並存為預設, session 間持續生效.</p></div>
+  <div class="s1-panel demo-panel"><p>在 settings 檔設定持久預設值, 不需開啟 session 即可配置.</p></div>
+  <div class="s1-panel demo-panel"><p>為單次 session 設定, 優先於已儲存的 advisorModel.</p></div>
+
+  <table class="ref">
+    <tr><th>主模型</th><th>可接受的 advisor</th></tr>
+    <tr><td>Haiku 4.5</td><td>Fable, Opus, Sonnet</td></tr>
+    <tr><td>Sonnet</td><td>Fable, Opus, 同版或更新的 Sonnet</td></tr>
+    <tr><td>Opus</td><td>Fable, 同版或更高版本的 Opus</td></tr>
+    <tr><td>Fable 5</td><td>僅 Fable</td></tr>
+  </table>
+
+  <div class="takeaway"><p>Claude 只在決策點呼叫 advisor 而非每回合, 通常比全程使用更強模型划算.<code>/advisor off</code> 可停用, <code>CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1</code> 可完全關閉此功能.</p></div>
+</section>
+
+<section id="s2">
+  <h2>2. Champion kit 內部推廣者手冊</h2>
+  <p>給已經在使用 Claude Code 並想協助團隊採用的工程師.採用很少來自推廣公告, 而是因為某人把工具用得好, 公開分享, 並讓其他人容易跟上.</p>
+
+  <div class="api-fields">
+    <div class="field"><div class="name">分享你的發現</div><div class="desc">把提示詞, 截圖, 小勝利貼到團隊已經在看的地方</div></div>
+    <div class="field"><div class="name">成為大家會問的人</div><div class="desc">回答時附上實際用的提示詞而非解釋</div></div>
+    <div class="field"><div class="name">擴大圈子</div><div class="desc">建立少量輕量, 可持續的習慣</div></div>
+    <div class="field"><div class="name">每週投入</div><div class="desc">分享約 15 分鐘, 答問約 20 分鐘, 分享串約 5 分鐘</div></div>
+  </div>
+
+  <h3>30 天推廣時程表</h3>
+  <div class="stage-tabs">
+    <div class="s2-tab stage-tab active" onclick="stepGoTo('s2',0,3)">第一週 · 播種</div>
+    <div class="s2-tab stage-tab" onclick="stepGoTo('s2',1,3)">第二週 · 節奏</div>
+    <div class="s2-tab stage-tab" onclick="stepGoTo('s2',2,3)">第三週 · 結對</div>
+    <div class="s2-tab stage-tab" onclick="stepGoTo('s2',3,3)">第四週 · 交棒</div>
+  </div>
+  <div class="s2-panel demo-panel visible" id="s2-p0"><p>建立頻道, 置頂 Quickstart, 貼出兩三個自己的範例與提示詞.</p></div>
+  <div class="s2-panel demo-panel" id="s2-p1"><p>啟動每週分享串, 公開回答每個問題, 分享一個自訂 skill 或 CLAUDE.md 片段.</p></div>
+  <div class="s2-panel demo-panel" id="s2-p2"><p>提供兩三次短時間結對, 把常見問答整理成置頂 FAQ.</p></div>
+  <div class="s2-panel demo-panel" id="s2-p3"><p>找出下一位推廣者, 向主管或管理者摘要成效.</p></div>
+</section>
+
+<section id="s3">
+  <h2>3. Communications kit 組織溝通套件</h2>
+  <p>給要在工程組織內推出 Claude Code 的管理者與工程主管, 提供可直接複製使用的發布公告, 逐週提示技巧宣傳文案, 常見問答一行回覆.</p>
+
+  <h3>發布前檢查清單</h3>
+  <div class="event-list">
+    <div class="event-item"><span class="event-name">頻道</span><span class="event-desc">建立 #claude-code 頻道並連結到公告中</span></div>
+    <div class="event-item"><span class="event-name">安裝測試</span><span class="event-desc">在自己環境測試過安裝指令, 提早發現代理或防火牆問題</span></div>
+    <div class="event-item"><span class="event-name">安全連結</span><span class="event-desc">準備好資料處理與安全性文件連結</span></div>
+    <div class="event-item"><span class="event-name">第一個任務</span><span class="event-desc">選定一個具體, 來自自己程式碼庫的範例</span></div>
+    <div class="event-item"><span class="event-name">高層贊助</span><span class="event-desc">具名發送公告的採用率高於管理者發送</span></div>
+  </div>
+
+  <div class="info-box"><span class="tag">宣傳文案主題</span><p>模型選擇, /init 產生 CLAUDE.md, @ 檔案引用, 權限模式, checkpointing 與 /rewind, MCP 連接器, skills, hooks, 螢幕截圖輸入, git 工作流程, plugins, 每則文案遵循相同結構, 吸引點, 效益, 立即可試的動作, 文件連結.</p></div>
+</section>
+
+<section id="s4">
+  <h2>4. Prompt library 提示詞庫</h2>
+  <p>依開發生命週期階段與角色標記的可直接複製貼上提示詞集合, 涵蓋探索, 規劃, 實作, 測試, 審查, 部署各階段.</p>
+
+  <pre class="code-block"><span class="cmt"># 探索階段範例</span>
+<span class="str">"give me an overview of this codebase: architecture, key directories, and how the pieces connect"</span>
+<span class="str">"explain what {path} does and how data flows through it"</span>
+<span class="str">"where do we {behavior}?"</span>
+<span class="str">"what would break if I deleted {target}?"</span></pre>
+
+  <div class="takeaway"><p>每個提示詞條目包含可代換的占位符與後續延伸閱讀連結, 定位為降低撰寫有效提示詞門檻的參考起點, 適合分享頻道或內部 wiki 供團隊直接取用.</p></div>
+</section>
+
+<section id="s5">
+  <h2>5. Claude Code changelog 版本更新紀錄</h2>
+  <p>記錄 Claude Code 每個版本的新功能, 改進, 錯誤修復, 版本號格式如 <code>2.1.198 (July 1, 2026)</code>, 來源為 GitHub 上的官方 CHANGELOG.md.</p>
+
+  <table class="ref">
+    <tr><th>版本</th><th>重點</th></tr>
+    <tr><td>2.1.198</td><td>Claude in Chrome 正式推出, Notification hook, /dataviz skill</td></tr>
+    <tr><td>2.1.197</td><td>Claude Sonnet 5 上線, 原生 1M token 情境視窗</td></tr>
+    <tr><td>2.1.196</td><td>組織預設模型支援, 可點擊檔案附件, MCP 安全性改進</td></tr>
+  </table>
+
+  <div class="info-box"><span class="tag">注意</span><p>執行 <code>claude --version</code> 可檢查目前安裝版本, Claude Code 更新頻繁, 課程中列出的版本號僅供參考時間點, 實際版本應以官方 changelog 為準.</p></div>
+</section>
+
+</main>
+
+<script>
+function toggleTheme() {
+  const isDark = document.body.classList.toggle('dark');
+  document.getElementById('themeToggle').textContent = isDark ? '☀ 亮色模式' : '🌙 暗色模式';
+}
+
+function chipGoTo(prefix, n) {
+  document.querySelectorAll('.' + prefix + '-panel').forEach((el, i) =>
+    el.classList.toggle('visible', i === n));
+  document.querySelectorAll('.' + prefix + '-chip').forEach((c, i) =>
+    c.classList.toggle('active', i === n));
+}
+
+function stepGoTo(prefix, n, max) {
+  n = Math.max(0, Math.min(max, n));
+  document.querySelectorAll('.' + prefix + '-panel').forEach((el, i) =>
+    el.classList.toggle('visible', i === n));
+  document.querySelectorAll('.' + prefix + '-tab').forEach((t, i) => {
+    t.classList.remove('active', 'done');
+    if (i === n) t.classList.add('active');
+    else if (i < n) t.classList.add('done');
+  });
+}
+</script>
+</body>
+</html>
