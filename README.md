@@ -36,31 +36,6 @@
 | `git-github-guide.md` | 給職場工作者的 Git & GitHub 入門指南: 基本概念、常用指令、GitHub CLI、認證方式 |
 | `claude-code-guide.md` | 給職場工作者的 Claude Code 入門指南: 與聊天機器人的差異、安全機制、辦公應用情境 |
 
-### Claude Code 使用手冊(第一~十二階段)
-
-| 檔案 | 說明 |
-|------|------|
-| `stage1-getting-started.md` | 入門與基本認識: 各平台安裝與啟動、基本概念 |
-| `stage2-daily-operations.md` | 日常操作與個人化設定: 互動模式、快捷鍵、Vim 模式、背景執行 |
-| `stage3-platforms-integrations.md` | 使用介面與平台整合: 各執行平台比較, GitHub/Slack 等工具整合 |
-| `stage4-extend-skills-hooks-mcp.md` | 擴充能力: CLAUDE.md、Skills、Hooks、子代理、MCP、Plugins |
-| `stage5-automation-multi-agent.md` | 自動化與多代理協作: `/goal`、`/loop`、排程、多代理團隊 |
-| `stage6-quality-security-compliance.md` | 程式碼品質, 安全與合規: Checkpointing、Code Review、ultrareview |
-| `stage7-cost-performance-observability.md` | 成本, 效能與可觀測性: 計費模式、`/usage`、prompt caching、情境視窗管理 |
-| `stage8-cicd-large-codebases.md` | CI/CD 與大型專案整合: GitHub Actions、GitLab CI/CD |
-| `stage9-agent-sdk.md` | Agent SDK: 用 Python/TypeScript 打造自訂代理 |
-| `stage10-enterprise-deployment.md` | 企業級部署與治理: Managed settings、sandbox、gateway |
-| `stage11-troubleshooting-reference.md` | 疑難排解與參考資料: 除錯設定、環境變數、錯誤代碼 |
-| `stage12-other-resources.md` | 其他資源: advisor 工具、提示詞庫、版本更新紀錄 |
-
-### 補充說明
-
-| 檔案 | 說明 |
-|------|------|
-| `claude-code-agents.md` | Claude Code `←` 多 Agent 並行管理說明 |
-| `claude-code-git-setup.md` | Claude Code 搭配 Git 的環境設定參考 |
-| `license-notes.md` | CC BY-SA 4.0 授權條款的白話說明：保留與開放的權利、著作權歸屬、版本比較 |
-
 ---
 
 ## 技術規格
