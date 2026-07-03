@@ -287,20 +287,6 @@
       cursor: default;
     }
 
-    .step-indicator {
-      color: #6b7280;
-      font-size: 0.82rem;
-      margin-left: auto;
-    }
-
-    .demo-controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
     .stage-tabs {
       display: flex;
       gap: 6px;
@@ -670,10 +656,6 @@
 
     body.dark .btn-ghost:disabled {
       opacity: 0.4;
-    }
-
-    body.dark .step-indicator {
-      color: #718096;
     }
 
     body.dark .stage-tab {
@@ -1123,11 +1105,6 @@
         </div>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="scPrev" disabled onclick="scGoTo(scStep-1)">← 上一個</button>
-        <button class="btn btn-primary" id="scNext" onclick="scGoTo(scStep+1)">下一個 →</button>
-        <span class="step-indicator" id="scIndicator">1 / 4</span>
-      </div>
     </section>
 
     <!-- ── 12. 使用時的基本注意事項 ── -->
@@ -1215,11 +1192,6 @@
         if (i === scStep) t.classList.add('active');
         else if (i < scStep) t.classList.add('done');
       });
-      document.getElementById('scPrev').disabled = scStep === 0;
-      const scNext = document.getElementById('scNext');
-      scNext.disabled = scStep === 3;
-      scNext.textContent = scStep === 3 ? 'Done ✓' : '下一個 →';
-      document.getElementById('scIndicator').textContent = (scStep + 1) + ' / 4';
     }
     scGoTo(0);
   </script>

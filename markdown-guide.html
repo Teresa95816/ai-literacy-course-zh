@@ -254,20 +254,6 @@
       cursor: default;
     }
 
-    .step-indicator {
-      color: #6b7280;
-      font-size: 0.82rem;
-      margin-left: auto;
-    }
-
-    .demo-controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
     .stage-tabs {
       display: flex;
       gap: 6px;
@@ -800,10 +786,6 @@
       opacity: 0.4;
     }
 
-    body.dark .step-indicator {
-      color: #718096;
-    }
-
     body.dark .stage-tab {
       background: #1a202c;
       border-color: #2d3748;
@@ -1107,12 +1089,6 @@
         <pre class="code-block"><span class="kw">######</span> <span class="str">六級標題</span></pre>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="hdPrev" disabled onclick="hdGoTo(hdStep-1)">← 上一層</button>
-        <button class="btn btn-primary" id="hdNext" onclick="hdGoTo(hdStep+1)">下一層 →</button>
-        <span class="step-indicator" id="hdIndicator">H1 / 共 6 層</span>
-      </div>
-
       <div class="info-box" style="margin-top:20px;">
         <span class="tag">最佳實踐</span>
         <p>同一份文件中標題層級不要跳階使用, 例如一級標題後直接接三級標題, 這樣會讓文件結構不清楚. 建議由 H1 依序往下使用.</p>
@@ -1199,11 +1175,6 @@
         </div>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="lsPrev" disabled onclick="lsGoTo(lsStep-1)">← 上一個</button>
-        <button class="btn btn-primary" id="lsNext" onclick="lsGoTo(lsStep+1)">下一個 →</button>
-        <span class="step-indicator" id="lsIndicator">1 / 2</span>
-      </div>
     </section>
 
     <!-- ── 7. 連結與圖片 ── -->
@@ -1266,11 +1237,6 @@
         </div>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="cdPrev" disabled onclick="cdGoTo(cdStep-1)">← 行內</button>
-        <button class="btn btn-primary" id="cdNext" onclick="cdGoTo(cdStep+1)">區塊 →</button>
-        <span class="step-indicator" id="cdIndicator">1 / 2</span>
-      </div>
     </section>
 
     <!-- ── 9. 引言區塊 Blockquote ── -->
@@ -1440,11 +1406,6 @@
         </div>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="scPrev" disabled onclick="scGoTo(scStep-1)">← 上一個</button>
-        <button class="btn btn-primary" id="scNext" onclick="scGoTo(scStep+1)">下一個 →</button>
-        <span class="step-indicator" id="scIndicator">1 / 3</span>
-      </div>
     </section>
 
     <!-- ── 15. 推薦工具 ── -->
@@ -1615,12 +1576,6 @@
         if (i === hdStep) t.classList.add('active');
         else if (i < hdStep) t.classList.add('done');
       });
-      document.getElementById('hdPrev').disabled = hdStep === 0;
-      const hdNext = document.getElementById('hdNext');
-      hdNext.disabled = hdStep === 5;
-      hdNext.textContent = hdStep === 5 ? 'Done ✓' : '下一層 →';
-      document.getElementById('hdIndicator').textContent =
-        'H' + (hdStep + 1) + ' / 共 6 層';
     }
     hdGoTo(0);
 
@@ -1635,11 +1590,6 @@
         if (i === lsStep) t.classList.add('active');
         else if (i < lsStep) t.classList.add('done');
       });
-      document.getElementById('lsPrev').disabled = lsStep === 0;
-      const lsNext = document.getElementById('lsNext');
-      lsNext.disabled = lsStep === 1;
-      lsNext.textContent = lsStep === 1 ? 'Done ✓' : '下一個 →';
-      document.getElementById('lsIndicator').textContent = (lsStep + 1) + ' / 2';
     }
     lsGoTo(0);
 
@@ -1654,11 +1604,6 @@
         if (i === cdStep) t.classList.add('active');
         else if (i < cdStep) t.classList.add('done');
       });
-      document.getElementById('cdPrev').disabled = cdStep === 0;
-      const cdNext = document.getElementById('cdNext');
-      cdNext.disabled = cdStep === 1;
-      cdNext.textContent = cdStep === 1 ? 'Done ✓' : '區塊 →';
-      document.getElementById('cdIndicator').textContent = (cdStep + 1) + ' / 2';
     }
     cdGoTo(0);
 
@@ -1673,11 +1618,6 @@
         if (i === scStep) t.classList.add('active');
         else if (i < scStep) t.classList.add('done');
       });
-      document.getElementById('scPrev').disabled = scStep === 0;
-      const scNext = document.getElementById('scNext');
-      scNext.disabled = scStep === 2;
-      scNext.textContent = scStep === 2 ? 'Done ✓' : '下一個 →';
-      document.getElementById('scIndicator').textContent = (scStep + 1) + ' / 3';
     }
     scGoTo(0);
 

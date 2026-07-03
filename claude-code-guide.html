@@ -291,20 +291,6 @@
       cursor: default;
     }
 
-    .step-indicator {
-      color: #6b7280;
-      font-size: 0.82rem;
-      margin-left: auto;
-    }
-
-    .demo-controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
     .stage-tabs {
       display: flex;
       gap: 6px;
@@ -633,10 +619,6 @@
       border-color: #4a5568;
     }
 
-    body.dark .step-indicator {
-      color: #718096;
-    }
-
     body.dark .stage-tab {
       background: #1a202c;
       border-color: #2d3748;
@@ -863,11 +845,6 @@
         </div>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="intPrev" disabled onclick="intGoTo(intStep-1)">← 上一步</button>
-        <button class="btn btn-primary" id="intNext" onclick="intGoTo(intStep+1)">下一步 →</button>
-        <span class="step-indicator" id="intIndicator">步驟 1 / 4</span>
-      </div>
     </section>
 
     <!-- 內建說明與回饋管道 -->
@@ -962,11 +939,6 @@
         </div>
       </div>
 
-      <div class="demo-controls">
-        <button class="btn btn-ghost" id="scPrev" disabled onclick="scGoTo(scStep-1)">← 上一個</button>
-        <button class="btn btn-primary" id="scNext" onclick="scGoTo(scStep+1)">下一個 →</button>
-        <span class="step-indicator" id="scIndicator">情境 1 / 4</span>
-      </div>
     </section>
 
     <!-- 使用時的基本注意事項 -->
@@ -1068,12 +1040,6 @@
         if (i === intStep) t.classList.add('active');
         else if (i < intStep) t.classList.add('done');
       });
-      document.getElementById('intPrev').disabled = intStep === 0;
-      const intNext = document.getElementById('intNext');
-      intNext.disabled = intStep === INT_MAX;
-      intNext.textContent = intStep === INT_MAX ? '完成 ✓' : '下一步 →';
-      document.getElementById('intIndicator').textContent =
-        '步驟 ' + (intStep + 1) + ' / ' + (INT_MAX + 1);
     }
     intGoTo(0);
 
@@ -1088,12 +1054,6 @@
         if (i === scStep) t.classList.add('active');
         else if (i < scStep) t.classList.add('done');
       });
-      document.getElementById('scPrev').disabled = scStep === 0;
-      const scNext = document.getElementById('scNext');
-      scNext.disabled = scStep === SC_MAX;
-      scNext.textContent = scStep === SC_MAX ? '完成 ✓' : '下一個 →';
-      document.getElementById('scIndicator').textContent =
-        '情境 ' + (scStep + 1) + ' / ' + (SC_MAX + 1);
     }
     scGoTo(0);
   </script>
