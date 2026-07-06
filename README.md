@@ -3,7 +3,6 @@
 ![banner](assets/banner.svg)
 
 ![Language](https://img.shields.io/badge/語言-繁體中文-D97757?style=flat&labelColor=1a1a1a)
-![License](https://img.shields.io/badge/License-CC%20BY--SA%204.0-D97757?style=flat&labelColor=1a1a1a)
 ![Last Commit](https://img.shields.io/github/last-commit/AlleninTaipei/ai-literacy-course-zh?style=flat&labelColor=1a1a1a&color=D97757)
 
 ---
